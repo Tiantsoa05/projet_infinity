@@ -29,8 +29,8 @@ function Hero() {
           {/* Boutons d'action */}
           <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
             <button className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-colors">
-              Commencer
-            </button> 
+              Commencer gratuitement
+            </button>
             <button className="border border-blue-600 text-blue-600 px-8 py-3 rounded-md hover:bg-blue-50 transition-colors">
               Voir les cours
             </button>

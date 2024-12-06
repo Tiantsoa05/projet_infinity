@@ -14,6 +14,10 @@ function LandingPageNavbar() {
     navigate("/langue");
   }
 
+  const handleLogin = () => {
+    navigate("/login");
+  }
+
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-md">
     <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -43,7 +47,7 @@ function LandingPageNavbar() {
 
       {/* Boutons d'action */}
       <div className="hidden md:flex items-center space-x-4">
-      <button className="w-full text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-md">
+      <button onClick={handleLogin} className="w-full text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-md">
               Connexion
             </button>
         <button onClick={handleClick} className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">

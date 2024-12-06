@@ -1,0 +1,94 @@
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
+import { 
+  LayoutDashboard, 
+  Users, 
+  BookOpen, 
+  FileText, 
+  Calendar, 
+  BarChart2, 
+  MessageCircle 
+} from 'lucide-react';
+
+export function Sidebar({ onSectionChange }) {
+  const [activeSection, setActiveSection] = useState('overview');
+
+  const sections = [
+    { 
+      icon: LayoutDashboard, 
+      label: 'Tableau de Bord', 
+      key: 'overview' 
+    },
+    { 
+      icon: BookOpen, 
+      label: 'Cours', 
+      key: 'courses' 
+    },
+    { 
+      icon: FileText, 
+      label: 'Exercices', 
+      key: 'exercises' 
+    },
+    { 
+      icon: Users, 
+      label: 'Étudiants', 
+      key: 'students' 
+    },
+    { 
+      icon: Calendar, 
+      label: 'Calendrier', 
+      key: 'calendar' 
+    },
+    { 
+      icon: MessageCircle, 
+      label: 'Communications', 
+      key: 'communications' 
+    },
+    { 
+      icon: BarChart2, 
+      label: 'Statistiques', 
+      key: 'stats' 
+    }
+  ];
+
+  const handleSectionChange = (key) => {
+    setActiveSection(key);
+    onSectionChange(key);
+  };
+
+  return (
+    <div className="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white p-4 shadow-xl">
+      <div className="text-3xl font-bold mb-10 text-center text-white flex items-center justify-center gap-2">
+        <BarChart2 className="text-blue-300" size={36} />
+        Infinity
+      </div>
+      <nav>
+        {sections.map((section) => (
+          <button
+            key={section.key}
+            onClick={() => handleSectionChange(section.key)}
+            className={`
+              flex items-center w-full p-3 mb-2 rounded-lg 
+              transition-all duration-200 ease-in-out
+              ${activeSection === section.key 
+                ? 'bg-blue-700 shadow-md scale-105' 
+                : 'hover:bg-blue-800 hover:translate-x-2 hover:shadow-sm'}
+            `}
+          >
+            <section.icon 
+              className={`mr-3 transition-colors duration-200 
+                ${activeSection === section.key ? 'text-white' : 'text-blue-300'}`} 
+              size={20} 
+            />
+            <span className={`
+              transition-colors duration-200
+              ${activeSection === section.key ? 'font-bold' : 'font-normal'}
+            `}>
+              {section.label}
+            </span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  );
+}

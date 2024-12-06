@@ -37,13 +37,7 @@ function Navbar({
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-md">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo et Langue Actuelle */}
         <div className="flex items-center space-x-4">
-          <img 
-            src="/logo.png" 
-            alt="Infinity Logo" 
-            className="h-10 w-auto"
-          />
           {currentLanguage && (
             <div className="flex items-center bg-blue-50 px-3 py-1 rounded-full">
               <span className="text-3xl mr-2">{currentLanguage.icon}</span>
