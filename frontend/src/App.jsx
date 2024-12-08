@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LanguageLearningJourney from "./components/languages/LanguageLearningJourney";
 import RegisterPage from "./pages/Register";
@@ -14,10 +14,25 @@ function App() {
         <Route path="/langue" element={<LanguageLearningJourney />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage/>} />
-        <Route path="/dashboard" element={<Dashboard />}/>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />}/>
+        </Route>
       </Routes> 
     </Router>
   );
 }
 
 export default App;
+
+const useAuth = () => {
+
+  const token = localStorage.getItem('token');
+  
+  return !!token;
+};
+
+const ProtectedRoute = () => {
+  const isAuthenticated = useAuth();
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+};
