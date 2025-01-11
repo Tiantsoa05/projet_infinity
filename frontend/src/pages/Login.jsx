@@ -7,7 +7,7 @@ import axios from 'axios';
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState();
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -20,12 +20,39 @@ const LoginPage = () => {
                 password
             });
 
-            localStorage.setItem('token', response.data.token);
+            // Vérification de la présence des données nécessaires
+            if (!response.data.token || !response.data.user) {
+                throw new Error('Données de connexion incomplètes');
+            }
 
-            navigate('/dashboard');
+            // Stockage des informations
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', response.data.user.id);
+            localStorage.setItem('userRole', response.data.user.role);
+            localStorage.setItem('userName', `${response.data.user.prenom} ${response.data.user.nom}`);
+
+            // Redirection basée sur le rôle
+            switch (response.data.user.role) {
+                case 'ADMIN':
+                    navigate('/dashboard');
+                    break;
+                case 'ENSEIGNANT':
+                    navigate('/dashboard');
+                    break;
+                case 'ETUDIANT':
+                    navigate('/cours');
+                    break;
+                default:
+                    setError('Rôle non reconnu');
+                    break;
+            }
         } catch (err) {
-            setError(err.response?.data?.message || 'Erreur de connexion');
-            console.error('Erreur de connexion', err);
+            console.error('Erreur de connexion:', err);
+            setError(
+                err.response?.data?.message || 
+                err.message || 
+                'Erreur lors de la connexion'
+            );
         }
     };
 

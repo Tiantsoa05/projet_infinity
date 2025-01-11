@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import de useNavigate
 import { 
   LayoutDashboard, 
   Users, 
@@ -12,6 +13,7 @@ import {
 
 export function Sidebar({ onSectionChange }) {
   const [activeSection, setActiveSection] = useState('overview');
+  const navigate = useNavigate(); // Initialisation de useNavigate
 
   const sections = [
     { 
@@ -58,7 +60,11 @@ export function Sidebar({ onSectionChange }) {
 
   return (
     <div className="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white p-4 shadow-xl">
-      <div className="text-3xl font-bold mb-10 text-center text-white flex items-center justify-center gap-2">
+      {/* Logo avec navigation */}
+      <div 
+        onClick={() => navigate('/')} // Redirection vers la page d'accueil
+        className="text-3xl font-bold mb-10 text-center text-white flex items-center justify-center gap-2 cursor-pointer"
+      >
         <BarChart2 className="text-blue-300" size={36} />
         Infinity
       </div>

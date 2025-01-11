@@ -3,7 +3,7 @@ import LevelTestComponent from './LevelTestComponent';
 import LevelResult from './LevelResult';
 import LanguageSelection from './LanguageSelection';
 import { calculateLevel } from '../../constants/levelTest';
-import Navbar from '../Navigation/Navbar';
+import Navbar from './Navbar';
 
 function LanguageLearningJourney() {
   const [step, setStep] = useState('language-selection');
@@ -22,33 +22,19 @@ function LanguageLearningJourney() {
   };
 
   const startLearningJourney = () => {
-    // Redirection vers le parcours d'apprentissage
     console.log(`Début du parcours pour ${selectedLanguage.name} - Niveau ${finalLevel}`);
   };
 
-  const currentLanguage = {
-    id: 'en',
-    name: 'Anglais',
-    icon: '🇬🇧'
+  const handleBack = () => {
+    setStep('language-selection');
+    setSelectedLanguage(null);
+    setFinalLevel(null);
   };
 
-  const userProfile = {
-    name: 'Jean Dupont',
-    email: 'jean@example.com',
-    avatar: '/path-to-avatar.jpg'
-  };
-
-  const handleLogout = () => {
-    // Logique de déconnexion
-  };
   return (
     <div>
-    <Navbar 
-      currentLanguage={currentLanguage}
-      userProfile={userProfile}
-      onLogout={handleLogout}
-    />
-    
+      <Navbar onBack={step !== 'language-selection' ? handleBack : null} />
+      
       {step === 'language-selection' && (
         <LanguageSelection onSelectLanguage={selectLanguage} />
       )}

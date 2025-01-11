@@ -51,7 +51,17 @@ exports.login = async (req, res) => {
     // Générer un token
     const token = jwt.sign({ userId: utilisateur.id_utilisateur }, process.env.JWT_SECRET, { expiresIn: '3h' });
     
-    res.json({ token });
+    // Renvoyer le token ET les informations de l'utilisateur (sans le mot de passe)
+    res.json({
+      token,
+      user: {
+        id: utilisateur.id_utilisateur,
+        nom: utilisateur.nom,
+        prenom: utilisateur.prenom,
+        email: utilisateur.email,
+        role: utilisateur.role
+      }
+    });
   } catch (err) {
     console.error('Erreur de connexion :', err);
     res.status(400).json({ message: err.message });

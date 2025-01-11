@@ -3,6 +3,7 @@ import { Sidebar } from '../components/Navigation/Sidebar';
 import { OverviewSection } from '../components/sections/OverviewSection';
 import { CoursesSection } from '../components/sections/CoursesSection';
 import Navbar from '../components/Navigation/Navbar';
+import VideoConference from './VideoConference';
 
 function Dashboard() {
   const [activeSection, setActiveSection] = useState('overview');
@@ -13,6 +14,8 @@ function Dashboard() {
         return <OverviewSection />;
       case 'courses':
         return <CoursesSection />;
+      case 'communications':
+        return <VideoConference />;
       default:
         return <OverviewSection />;
     }

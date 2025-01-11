@@ -1,11 +1,52 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-// Database connection (configure as per your environment)
+
+// Configuration de la base de données
 const sequelize = new Sequelize('infinity', 'postgres', 'root', {
   host: 'localhost',
   dialect: 'postgres',
-  logging: console.log
+  logging: false,
+  // Configuration pour la persistance
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+  // Désactiver la modification automatique du schéma
+  sync: {
+    force: false, // Ne pas supprimer les tables existantes
+    alter: false  // Ne pas modifier les tables existantes
+  }
 });
+
+// Fonction d'initialisation de la base de données
+async function initializeDatabase() {
+  try {
+    // Tester la connexion
+    await sequelize.authenticate();
+    console.log('Connexion à la base de données établie avec succès.');
+
+    // Synchroniser les modèles avec la base de données
+    // force: false signifie que les tables ne seront pas supprimées et recréées
+    await sequelize.sync({ force: false });
+    console.log('Les modèles ont été synchronisés avec la base de données.');
+  } catch (error) {
+    console.error('Erreur lors de la connexion à la base de données:', error);
+    throw error;
+  }
+}
+
+// Fonction pour gérer la fermeture propre de la connexion
+async function closeDatabase() {
+  try {
+    await sequelize.close();
+    console.log('Connexion à la base de données fermée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la fermeture de la connexion:', error);
+    throw error;
+  }
+}
 
 // Utilisateurs Model
 class Utilisateur extends Model {}
@@ -335,6 +376,8 @@ Utilisateur.hasMany(Message, { as: 'Recus', foreignKey: 'id_destinataire' });
 
 module.exports = {
   sequelize,
+  initializeDatabase,
+  closeDatabase,
   Utilisateur,
   Cours,
   Lecon,

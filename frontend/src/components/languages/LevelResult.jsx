@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Globe } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-function LevelResult({ 
-  selectedLanguage, 
-  finalLevel,
-  onStartLearningJourney 
-}) {
+function LevelResult({ selectedLanguage, finalLevel }) {
+  const navigate = useNavigate();
+
+  const onStartLearningJourney = () => {
+    navigate('/register');
+  };
+
   const getLevelDescription = () => {
     switch (finalLevel) {
       case 'debutant':
@@ -29,10 +32,8 @@ function LevelResult({
         <h3 className="text-2xl font-semibold capitalize mb-4">
           Niveau {finalLevel}
         </h3>
-        <p className="text-gray-600 mb-6">
-          {getLevelDescription()}
-        </p>
-        <button 
+        <p className="text-gray-600 mb-6">{getLevelDescription()}</p>
+        <button
           className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700"
           onClick={onStartLearningJourney}
         >
