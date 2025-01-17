@@ -2,7 +2,7 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 
 
 // Configuration de la base de données
-const sequelize = new Sequelize('infinity', 'postgres', 'root', {
+const sequelize = new Sequelize('infinity', 'postgres', '', {
   host: 'localhost',
   dialect: 'postgres',
   logging: false,
@@ -319,7 +319,7 @@ Message.init({
     primaryKey: true,
     autoIncrement: true
   },
-  id_expediteur: {
+  id_prof: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -327,7 +327,7 @@ Message.init({
       key: 'id_utilisateur'
     }
   },
-  id_destinataire: {
+  id_etudiant: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -338,6 +338,10 @@ Message.init({
   contenu: {
     type: DataTypes.TEXT,
     allowNull: false
+  },
+  send_type:{
+    type: DataTypes.INTEGER,
+    allowNull:false
   },
   date_envoi: {
     type: DataTypes.DATE,

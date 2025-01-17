@@ -7,6 +7,8 @@ const authRoutes = require('./routes/auth.routes');
 const coursRoute = require('./routes/coursRoute');
 const leconRoute  = require('./routes/leconRoute')
 const inscriptionRoute = require('./routes/inscriptionRoute');
+const PracticeRoute = require('./routes/Etudiant/PracticeRouter')
+const MessageRouter = require('./routes/MessageRouter')
 const { sequelize } = require('./models/model');
 
 require('dotenv').config();
@@ -17,7 +19,8 @@ const port = process.env.PORT || 3000;
 
 // Configuration CORS
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  // origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: '*',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
@@ -26,18 +29,21 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Configuration Socket.io
-const io = socketIo(server, {
-  cors: corsOptions,
-  transports: ['websocket', 'polling'],
-  pingTimeout: 60000,
-  pingInterval: 25000
+const io = socketIo(8000, {
+  cors: {
+    origin: "*", // Remplacez par l'URL de votre client
+    methods: ["GET", "POST"],       // Méthodes HTTP autorisées
+    credentials: true               // Autoriser les cookies si nécessaires
+  }
 });
 
 // Routes
 app.use('/auth', authRoutes);
 app.use('/cours', coursRoute);
 app.use('/', leconRoute);
-app.use('/inscriptions', inscriptionRoute )
+app.use('/inscriptions', inscriptionRoute)
+app.use('/learn',PracticeRoute)
+app.use('/messages',MessageRouter)
 
 
 // Gestion des salles de réunion
@@ -88,6 +94,10 @@ io.on('connection', (socket) => {
     const { roomId, candidate } = data;
     socket.to(roomId).emit('ice-candidate', { candidate, senderId: socket.id });
   });
+
+  socket.on('message-client',(data)=>{
+    console.log(data)
+  })
 
   socket.on('disconnect', () => {
     for (const [roomId, room] of rooms.entries()) {

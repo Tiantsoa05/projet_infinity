@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
+import { useNavigate } from 'react-router-dom';
 import { LANGUAGES } from '../../constants/Languages';
 
 function LanguageSelection({ onSelectLanguage }) {
+  const navigate = useNavigate()
   return (
     <div className="container mx-auto px-4 py-12">
       <h2 className="text-3xl font-bold text-center mb-8">
@@ -21,6 +23,10 @@ function LanguageSelection({ onSelectLanguage }) {
           </div>
         ))}
       </div>
+      <button
+        className="text-white bg-blue-600 px-4 py-2 rounded-md mt-10"
+        onClick={()=>navigate('/')} 
+      >Retour</button>
     </div>
   );
 }

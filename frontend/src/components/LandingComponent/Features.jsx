@@ -2,7 +2,8 @@ import {
     Book, 
     Headphones, 
     MessageCircle, 
-    Globe 
+    Globe ,
+    GraduationCap
   } from 'lucide-react';
   
   function Features() {
@@ -10,7 +11,7 @@ import {
       {
         icon: Book,
         title: 'Contenu Interactif',
-        description: 'Des leçons dynamiques et engageantes avec des exercices variés.'
+        description: 'Des modules de leçons dynamiques et engageantes avec des exercices variés.'
       },
       {
         icon: Headphones,
@@ -20,12 +21,12 @@ import {
       {
         icon: MessageCircle,
         title: 'Conversations Réelles',
-        description: 'Pratiquez avec des locuteurs natifs et des IA conversationnelles.'
+        description: 'Pratiquez et conversez entre étudiants et avec des profs.'
       },
       {
-        icon: Globe,
-        title: 'Immersion Culturelle',
-        description: 'Découvrez la culture à travers l\'apprentissage de la langue.'
+        icon: GraduationCap,
+        title: 'Accompagnement des profs',
+        description: 'Bénéficier des accompagnements des profs pour parfaire votre apprentissage.'
       }
     ];
   

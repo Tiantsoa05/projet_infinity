@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
     
     // Vérifier l'utilisateur et le mot de passe
     if (!utilisateur || !(await bcrypt.compare(password, utilisateur.mot_de_passe))) {
-      return res.status(401).json({ message: 'Identifiants invalides' });
+      return res.status(401).json({ message: 'Identifiant invalide' });
     }
 
     // Générer un token

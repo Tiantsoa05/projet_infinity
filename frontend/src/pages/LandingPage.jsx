@@ -12,7 +12,7 @@ function LandingPage() {
       <Hero />
       <Features />
       <Testimonials />
-      <Pricing />
+      {/* <Pricing /> */}
       <LandingPageFooter />
     </div>
   )

@@ -39,10 +39,14 @@ function LanguageLearningJourney() {
         <LanguageSelection onSelectLanguage={selectLanguage} />
       )}
       {step === 'level-test' && (
-        <LevelTestComponent 
-          selectedLanguage={selectedLanguage} 
-          onLevelTestComplete={handleLevelTestComplete}
-        />
+        <>
+          <LevelTestComponent 
+            selectedLanguage={selectedLanguage} 
+            onLevelTestComplete={handleLevelTestComplete}
+            back={() => setStep("language-selection")}
+          />
+
+        </>
       )}
       {step === 'level-result' && (
         <LevelResult 

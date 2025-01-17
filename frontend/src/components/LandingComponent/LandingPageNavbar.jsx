@@ -40,34 +40,37 @@ function LandingPageNavbar() {
     <>
       <nav className="sticky top-0 z-50 bg-white shadow-md">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center">
-            <img src="/logo.png" alt="Infinity" className="h-10 w-auto" />
-            <span className="ml-2 text-xl font-bold text-blue-600">Infinity</span>
+          <div 
+            className="flex items-center cursor-pointer"
+            onClick={()=>navigate('/')}
+          >
+            <img src="/src/assets/logo.png" alt="Infinity" className="h-10 w-auto" />
+            <span className="ml-2 text-xl font-bold text-blue-600"></span>
           </div>
 
           {/* Menu desktop */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-6 ml-auto">
             <a href="#features" className="text-gray-700 hover:text-blue-600">
               Fonctionnalités
             </a>
-            <a href="#prix" className="text-gray-700 hover:text-blue-600">
-              Tarifs
-            </a>
             <a href="#temoignages" className="text-gray-700 hover:text-blue-600">
-              Témoignages
+              Avantages
             </a>
+            {/* <a href="#prix" className="text-gray-700 hover:text-blue-600">
+              Tarifs
+            </a> */}
           </div>
 
           {/* Boutons d'action */}
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <button
+                {/* <button
                   onClick={handleConsulter}
                   className="text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-md"
                 >
                   Consulter
-                </button>
+                </button> */}
                 <button
                   onClick={openLogoutModal}
                   className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
@@ -83,12 +86,12 @@ function LandingPageNavbar() {
                 >
                   Connexion
                 </button>
-                <button
+                {/* <button
                   onClick={() => navigate("/langue")}
                   className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Commencer
-                </button>
+                </button> */}
               </>
             )}
           </div>
@@ -120,12 +123,12 @@ function LandingPageNavbar() {
               <div className="space-y-2 pt-2 border-t">
                 {isAuthenticated ? (
                   <>
-                    <button
+                    {/* <button
                       onClick={handleConsulter}
                       className="w-full text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-md"
                     >
                       Consulter
-                    </button>
+                    </button> */}
                     <button
                       onClick={openLogoutModal}
                       className="w-full bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"

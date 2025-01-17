@@ -33,7 +33,7 @@ function Testimonials() {
     <section id="temoignages" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
-          Ce que nos <span className="text-blue-600">apprenants</span> disent
+          Ce que vous <span className="text-blue-600">bénéficierez</span>.
         </h2>
         
         <div className="grid md:grid-cols-3 gap-8">

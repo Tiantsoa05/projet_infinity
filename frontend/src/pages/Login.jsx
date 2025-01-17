@@ -40,7 +40,7 @@ const LoginPage = () => {
                     navigate('/dashboard');
                     break;
                 case 'ETUDIANT':
-                    navigate('/cours');
+                    navigate('/home');
                     break;
                 default:
                     setError('Rôle non reconnu');

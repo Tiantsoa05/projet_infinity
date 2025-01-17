@@ -6,46 +6,39 @@ const {validationError, DatabaseError} = require('sequelize');
 
 class CoursController {
     async creerCours(req, res) {
-        try {
-            const {nom, description, langue, niveau_difficulte, duree, prix} = req.body;
+      try {
+          const {nom, description, langue, niveau_difficulte, duree, prix} = req.body;
+          if(!nom || !langue) {
+              return res.status(400).json ({
+                  message: 'Le nom et la langue sont requis'
+              }); 
+          }
 
-            //Validation de données requise
-            if(!nom || !langue) {
-                return res.status(400).json ({
-                    success: false,
-                    message: 'Le nom et la langue sont requis'
-                }); 
-            }
+          const nouveauCours = await Cours.create({
+              nom,
+              description,
+              langue,
+              niveau_difficulte,
+              duree,
+              prix,
+          });
 
-            const nouveauCours = await Cours.create({
-                nom,
-                description,
-                langue,
-                niveau_difficulte,
-                duree,
-                prix,
+          return res.status(201).json({
+              message: 'Cours crée avec succès',
+              data: nouveauCours
+          });
+      }catch(error) {
+          if(error instanceof validationError) {
+            return res.status(400).json ({
+                message: 'Erreur de validation',
+                errors:  error.error.map(e => e.message)
             });
-
-            return res.status(201).json({
-                success: true,
-                message: 'Cours crée avec succès',
-                data: nouveauCours
-            });
-        }catch(error) {
-            if(error instanceof validationError) {
-                return res.status(400).json ({
-                    success: false,
-                    message: 'Erreur de validation',
-                    errors:  error.error.map(e => e.message)
-                });
-            }
-
+          }
         return res.status(500).json({
-            success: false,
             message:'Erreur lors de la création du cours',
             error: error.message
         })
-        }       
+      }       
     }
 
     //récupérer tous les cours 

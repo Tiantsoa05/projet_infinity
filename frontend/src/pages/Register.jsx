@@ -3,35 +3,25 @@ import { useState } from 'react';
 import { UserPlus, Mail, Lock, UserCircle, GraduationCap, Languages, Globe } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ConfirmRegister from '../components/Popup/ConfirmRegister';
 
-const LANGUES_MATERNELLES = [
-    'Malagasy',
-    'Français', 
-    'Anglais', 
-    'Arabe', 
-    'Espagnol', 
-    'Allemand', 
-    'Chinois', 
-    'Italien', 
-    'Portugais', 
-    'Russe', 
-    'Autre'
-];
+
 
 const RegisterPage = () => {
     const [nom, setNom] = useState('');
     const [prenom, setPrenom] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [role, setRole] = useState('ETUDIANT');
     const [error, setError] = useState();
     const navigate = useNavigate();
-    const [niveauLangue, setNiveauLangue] = useState('debutant');
-    const [langueMaternelle, setLangueMaternelle] = useState('');
+    const [registerModal,setRegisterModal]= useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setRegisterModal(false)
 
         try {
             const response = await axios.post('http://localhost:3000/auth/register', {
@@ -39,9 +29,10 @@ const RegisterPage = () => {
                 prenom,
                 email,
                 password,
-                role,
-                niveau_langue: niveauLangue,
-                langue_maternelle: langueMaternelle
+                confirmPassword,
+                role
+                // niveau_langue: niveauLangue,
+                // langue_maternelle: langueMaternelle
             });
 
             localStorage.setItem('token', response.data.token);
@@ -53,6 +44,11 @@ const RegisterPage = () => {
             console.error('Erreur d\'inscription', err);
         }
     };
+
+    const handleModal = (e)=>{
+        e.preventDefault()
+        setRegisterModal(true)
+    }
 
     return (
         <div className="min-h-screen flex">
@@ -165,122 +161,31 @@ const RegisterPage = () => {
                             </div>
 
                             <div>
-                                <label htmlFor="langueMaternelle" className="block text-sm font-medium text-gray-700">
-                                    Langue Maternelle
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    Confirmer mot de Passe
                                 </label>
                                 <div className="mt-1 relative rounded-md shadow-sm">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Globe className="h-5 w-5 text-gray-400" />
+                                        <Lock className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <select
-                                        id="langueMaternelle"
-                                        name="langueMaternelle"
+                                    <input
+                                        id="confirmpassword"
+                                        name="confirmpassword"
+                                        type="confirmpassword"
+                                        autoComplete="new-password"
                                         required
-                                        value={langueMaternelle}
-                                        onChange={(e) => setLangueMaternelle(e.target.value)}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
                                         className="pl-10 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                    >
-                                        <option value="">Sélectionnez votre langue maternelle</option>
-                                        {LANGUES_MATERNELLES.map((langue) => (
-                                            <option key={langue} value={langue}>
-                                                {langue}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-
-                            {/* Sélection du Rôle */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Vous êtes :
-                                </label>
-                                <div className="flex space-x-4">
-                                    <label className="inline-flex items-center">
-                                        <input
-                                            type="radio"
-                                            className="form-radio"
-                                            name="role"
-                                            value="ETUDIANT"
-                                            checked={role === 'ETUDIANT'}
-                                            onChange={() => setRole('ETUDIANT')}
-                                        />
-                                        <span className="ml-2 flex items-center">
-                                            <GraduationCap className="h-5 w-5 mr-1 text-blue-600" />
-                                            Étudiant
-                                        </span>
-                                    </label>
-                                    <label className="inline-flex items-center">
-                                        <input
-                                            type="radio"
-                                            className="form-radio"
-                                            name="role"
-                                            value="ENSEIGNANT"
-                                            checked={role === 'ENSEIGNANT'}
-                                            onChange={() => setRole('ENSEIGNANT')}
-                                        />
-                                        <span className="ml-2 flex items-center">
-                                            <UserCircle className="h-5 w-5 mr-1 text-blue-600" />
-                                            Professeur
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Niveau de Langue
-                                </label>
-                                <div className="flex space-x-4">
-                                    <label className="inline-flex items-center">
-                                        <input
-                                            type="radio"
-                                            className="form-radio"
-                                            name="niveauLangue"
-                                            value="debutant"
-                                            checked={niveauLangue === 'debutant'}
-                                            onChange={() => setNiveauLangue('debutant')}
-                                        />
-                                        <span className="ml-2 flex items-center">
-                                            <Languages className="h-5 w-5 mr-1 text-blue-600" />
-                                            Débutant
-                                        </span>
-                                    </label>
-                                    <label className="inline-flex items-center">
-                                        <input
-                                            type="radio"
-                                            className="form-radio"
-                                            name="niveauLangue"
-                                            value="intermediaire"
-                                            checked={niveauLangue === 'intermediaire'}
-                                            onChange={() => setNiveauLangue('intermediaire')}
-                                        />
-                                        <span className="ml-2 flex items-center">
-                                            <Languages className="h-5 w-5 mr-1 text-blue-600" />
-                                            Intermédiaire
-                                        </span>
-                                    </label>
-                                    <label className="inline-flex items-center">
-                                        <input
-                                            type="radio"
-                                            className="form-radio"
-                                            name="niveauLangue"
-                                            value="avance"
-                                            checked={niveauLangue === 'avance'}
-                                            onChange={() => setNiveauLangue('avance')}
-                                        />
-                                        <span className="ml-2 flex items-center">
-                                            <Languages className="h-5 w-5 mr-1 text-blue-600" />
-                                            Avancé
-                                        </span>
-                                    </label>
+                                        placeholder="Confirmez votre mot de passe"
+                                    />
                                 </div>
                             </div>
 
                             {/* Bouton d'Inscription */}
                             <div>
                                 <button
-                                    type="submit"
+                                    onClick={handleModal}
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                 >
                                     S'inscrire
@@ -300,7 +205,14 @@ const RegisterPage = () => {
                     </div>
                 </div>
             </div>
-
+            
+            {/* Modal confirmation inscription */}
+            {
+                registerModal && <ConfirmRegister 
+                    closeRegisterModal={()=>setRegisterModal(false)}
+                    handleRegister={handleSubmit}
+                />
+            }
             {/* Separateur vertical */}
             <div className="hidden lg:block w-px bg-gray-200"></div>
 
