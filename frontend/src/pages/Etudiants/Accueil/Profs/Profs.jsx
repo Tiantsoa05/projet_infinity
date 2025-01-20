@@ -10,7 +10,7 @@ export const Profs = ({profs,setProf}) => {
                 profs.map((prof)=>(
                     <CardProf 
                         prof={prof} 
-                        key={prof.nom}
+                        key={prof.nom_prof}
                         setProf={setProf}
                     />
                 ))

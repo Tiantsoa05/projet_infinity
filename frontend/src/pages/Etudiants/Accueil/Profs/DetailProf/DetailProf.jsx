@@ -13,10 +13,9 @@ const DetailProf = ({prof})=>{
                 />
             </div>
             <div className="names text-center mb-4">
-                <h5 className="text-lg font-semibold">{prof.nom} {prof.prenom}</h5>
+                <h5 className="text-lg font-semibold">{prof.nom_prof} {prof.prenom_prof}</h5>
                 <p className="text-sm text-gray-600">Diplome: {prof.diplome}</p>
-                <p className="text-sm text-gray-600">Niveau de langue: {prof.niveau}</p>
-                <p className="text-sm text-gray-600">Cout: {prof.cout}</p>
+                <p className="text-sm text-gray-600">Niveau de langue: {prof.Niveau_Etude}</p>
             </div>
             <div className="buttons flex justify-center gap-4">
                 <Link to={"/payer"}>

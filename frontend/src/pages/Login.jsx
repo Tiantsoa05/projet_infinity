@@ -30,6 +30,7 @@ const LoginPage = () => {
             localStorage.setItem('userId', response.data.user.id);
             localStorage.setItem('userRole', response.data.user.role);
             localStorage.setItem('userName', `${response.data.user.prenom} ${response.data.user.nom}`);
+            localStorage.setItem('prof',response.data.user.prof)
 
             // Redirection basée sur le rôle
             switch (response.data.user.role) {

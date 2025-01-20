@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./Accueil.css"
 import { Header } from "./Header/Header.jsx";
 import { Profs } from "./Profs/Profs.jsx";
@@ -7,6 +7,7 @@ import DetailProf from "./Profs/DetailProf/DetailProf.jsx";
 import { Lessons } from "./Lessons/Lessons.jsx";
 import { Exercice } from "./Exercice/Exercice.jsx";
 import Post from "./Post/Post.jsx";
+import axios from "axios";
 
 const Accueil = ()=>{
     const data = [
@@ -84,6 +85,10 @@ const Accueil = ()=>{
         setCliquedProf(null)
         DisplayExercice(false)
     }
+
+    useEffect(()=>{
+        axios.get('http://localhost:3000/all/profs').then(data=>setProfs(data.data))
+    },[])
 
     return (
         <div className="accueil justify-content-center align-items-center w-100 h-100">

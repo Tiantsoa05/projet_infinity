@@ -2,6 +2,7 @@ import { UserPlus, Mail, Lock, UserCircle, GraduationCap, Languages, Globe } fro
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
+import ConfirmRegister from '../../components/Popup/ConfirmRegister';
 
 const LANGUES_MATERNELLES = [
     'Malagasy',
@@ -26,7 +27,6 @@ const ProfRegister = () => {
     const [role, setRole] = useState('ENSEIGNANT');
     const [error, setError] = useState();
     const navigate = useNavigate();
-    const [niveauLangue, setNiveauLangue] = useState('debutant');
     const [langueEnseigner, setlangueEnseigner] = useState('');
     const [registerModal,setRegisterModal]= useState(false)
 
@@ -35,25 +35,31 @@ const ProfRegister = () => {
         setError('');
         setRegisterModal(false)
 
-        try {
-            const response = await axios.post('http://localhost:3000/auth/register', {
-                nom,
-                prenom,
-                email,
-                password,
-                confirmPassword,
-                role,
-                niveau_langue: niveauLangue,
-                langue_enseigner: langueMaternelle
-            });
+        if(password!==confirmPassword){
+            setError('Les mots de passe ne correspondent pas.')
+        }else{
 
-            localStorage.setItem('token', response.data.token);
+            console.log(langueEnseigner)
+            try {
+                const response = await axios.post('http://localhost:3000/auth/prof/register', {
+                    nom,
+                    prenom,
+                    email,
+                    password,
+                    confirmPassword,
+                    role,
+                    langue_enseigner: langueEnseigner
+                });
+    
+                localStorage.setItem('token', response.data.token);
+    
+                navigate('/login');
+            } catch (err) {
+    
+                setError(err.response?.data?.message || 'Erreur lors de l\'inscription');
+                console.error('Erreur d\'inscription', err);
+            }
 
-            navigate('/login');
-        } catch (err) {
-
-            setError(err.response?.data?.message || 'Erreur lors de l\'inscription');
-            console.error('Erreur d\'inscription', err);
         }
     };
 
@@ -183,7 +189,7 @@ const ProfRegister = () => {
                                     <input
                                         id="confirmpassword"
                                         name="confirmpassword"
-                                        type="confirmpassword"
+                                        type="password"
                                         autoComplete="new-password"
                                         required
                                         value={confirmPassword}
@@ -207,7 +213,7 @@ const ProfRegister = () => {
                                         name="langueEnseigner"
                                         required
                                         value={langueEnseigner}
-                                        onChange={(e) => setlangueEnseigner(e.target.value)}
+                                        onChange={(e) => console.log(e.target.value)}
                                         className="pl-10 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     >
                                         <option value="">Sélectionnez la langue que vous enseignez</option>

@@ -1,57 +1,63 @@
-const express = require('express');
-const cors = require('cors');
-const http = require('http');
-const socketIo = require('socket.io');
-const crypto = require('crypto');
-const authRoutes = require('./routes/auth.routes');
-const coursRoute = require('./routes/coursRoute');
-const leconRoute  = require('./routes/leconRoute')
-const inscriptionRoute = require('./routes/inscriptionRoute');
-const PracticeRoute = require('./routes/Etudiant/PracticeRouter')
-const MessageRouter = require('./routes/MessageRouter')
-const { sequelize } = require('./models/model');
-
-require('dotenv').config();
+import express from "express";
+import cors from "cors";
+import StudentRouter from "./src/routers/StudentRouter.js";
+import ChoicesRouter from "./src/routers/ChoicesRouter.js"
+import AuthRouter from './src/routers/AuthRouter.js'
+import AdminRouter from './src/routers/AdminRouter.js'
+import ChatRouter from './src/routers/ChatRouter.js'
+import io from "./src/tools/socket-io.js";
+import { send } from "./src/controllers/Etudiants/ChatController.js";
 
 const app = express();
-const server = http.createServer(app);
-const port = process.env.PORT || 3000;
 
-// Configuration CORS
-const corsOptions = {
-  // origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
-  origin: '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
 
-app.use(cors(corsOptions));
 app.use(express.json());
-
-// Configuration Socket.io
-const io = socketIo(8000, {
-  cors: {
-    origin: "*", // Remplacez par l'URL de votre client
-    methods: ["GET", "POST"],       // Méthodes HTTP autorisées
-    credentials: true               // Autoriser les cookies si nécessaires
-  }
-});
+app.use(cors());
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/cours', coursRoute);
-app.use('/', leconRoute);
-app.use('/inscriptions', inscriptionRoute)
-app.use('/learn',PracticeRoute)
-app.use('/messages',MessageRouter)
+
+app.use("/students", StudentRouter);
+app.use('/auth', AuthRouter)
+app.use('/operations', ChoicesRouter)
+app.use('/all',AdminRouter)
+app.use('/messenger',ChatRouter)
+
+// config room meet
+const rooms = new Map()
 
 
-// Gestion des salles de réunion
-const rooms = new Map();
+// Socket configuration
 
-io.on('connection', (socket) => {
-  console.log('Nouvelle connexion:', socket.id);
+io.on("connection",(socket)=>{
 
+  // Socket initialisation
+  
+  console.log(' Connected socket id + ' + socket.id);
+  io.emit("message", "Hello World");
+  
+  // Test of socket events
+
+  socket.onAny((eventName, ...args) => {
+    console.log(`Event received: ${eventName}`, args);
+  });
+  
+
+  // Socket chat service
+  socket.on('message-etudiant',(data)=>{
+    send(data)
+    socket.emit('message-prof',data)
+    console.log({message_etudiant:data})
+  })
+
+  socket.on('message-prof',(data)=>{
+    send(data)
+    socket.emit('message-etudiant',data)
+    console.log({message_prof:data})
+  })
+
+
+
+  // Event room
   socket.on('create-room', () => {
     const roomId = crypto.randomUUID();
     const roomPassword = crypto.randomUUID();
@@ -64,7 +70,7 @@ io.on('connection', (socket) => {
     });
 
     socket.emit('room-created', { roomId, roomPassword });
-  });
+  })
 
   socket.on('join-room', (data) => {
     const { roomId, password, userId } = data;
@@ -78,7 +84,7 @@ io.on('connection', (socket) => {
     } else {
       socket.emit('join-error', 'Salle invalide ou mot de passe incorrect');
     }
-  });
+  })
 
   socket.on('offer', (data) => {
     const { roomId, offer } = data;
@@ -95,63 +101,12 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('ice-candidate', { candidate, senderId: socket.id });
   });
 
-  socket.on('message-client',(data)=>{
-    console.log(data)
+  socket.on("disconnect",()=>{
+    console.log('user disconnected');
   })
+})
 
-  socket.on('disconnect', () => {
-    for (const [roomId, room] of rooms.entries()) {
-      room.members.delete(socket.id);
-      if (room.members.size === 0) {
-        rooms.delete(roomId);
-      }
-    }
-    console.log('Client déconnecté:', socket.id);
-  });
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });
-
-// Initialisation de la base de données
-const initializeDatabase = async () => {
-  try {
-    // Vérifier la connexion
-    await sequelize.authenticate();
-    console.log('Connexion à la base de données établie avec succès.');
-
-    // Synchroniser les modèles sans forcer la réinitialisation
-    await sequelize.sync({ force: false, alter: true });
-    console.log('Modèles synchronisés avec la base de données.');
-  } catch (error) {
-    console.error('Erreur lors de l\'initialisation de la base de données:', error);
-    process.exit(1);
-  }
-};
-
-// Démarrage du serveur
-const startServer = async () => {
-  try {
-    await initializeDatabase();
-    
-    server.listen(port, () => {
-      console.log(`Serveur démarré sur le port ${port}`);
-    });
-  } catch (error) {
-    console.error('Erreur lors du démarrage du serveur:', error);
-    process.exit(1);
-  }
-};
-
-// Gestion de l'arrêt propre
-process.on('SIGTERM', async () => {
-  try {
-    await sequelize.close();
-    server.close(() => {
-      console.log('Serveur arrêté proprement');
-      process.exit(0);
-    });
-  } catch (error) {
-    console.error('Erreur lors de l\'arrêt du serveur:', error);
-    process.exit(1);
-  }
-});
-
-startServer();

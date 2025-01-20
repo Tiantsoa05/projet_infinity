@@ -16,13 +16,12 @@ export const CardProf = ({ prof, setProf }) => {
                 />
             </div>
             <div className="names">
-                <h5 className="text-lg font-semibold">{prof.nom} {prof.prenom}</h5>
+                <h5 className="text-lg font-semibold">{prof.nom_prof} {prof.prenom_prof}</h5>
             </div>
         </div>
         <div className="description mt-4 text-gray-700">
             <div>{prof.diplome}</div>
-            <div>{prof.niveau}</div>
-            <div>{prof.cout}</div>
+            <div>{prof.Niveau_Etude}</div>
         </div>
     </div>
   );

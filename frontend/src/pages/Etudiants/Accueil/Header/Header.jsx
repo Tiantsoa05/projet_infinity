@@ -13,10 +13,16 @@ import {House} from 'lucide-react'
 export const Header = () => {
     const [showNotification,setNotification] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [haveProf, setHaveProf] = useState(false)
     const notificationRef = useRef(null)
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
     const navigate = useNavigate()
     const location = useLocation()
+
+    useEffect(()=>{
+      const {prof}=localStorage
+      setHaveProf((prof!==null))
+    },[])
 
     const handleIconClick = () => {
       if(showNotification){
@@ -101,13 +107,17 @@ export const Header = () => {
           7</span>
         </div>
         <div className="notif relative cursor-pointer" onClick={handleIconClick}>
-          <div className="icon-notif">
-            <IoNotifications 
-                size={34}  
-                className="icon text-black"
-                color="#000"
-            />
-          </div>
+        {
+            haveProf &&
+            <div className="icon-notif">
+              <IoNotifications 
+                  size={34}  
+                  className="icon text-black"
+                  color="#000"
+              />
+            </div>
+        }
+         
           {
             showNotification && 
             <div ref={notificationRef} className="absolute top-12 right-0 z-10">

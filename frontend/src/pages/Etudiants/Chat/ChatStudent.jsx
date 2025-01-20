@@ -7,48 +7,28 @@ import './Chat.css'
 import axios from "axios";
 
 const ChatStudent = () => {
-    const [messages, setMessages] = useState([
-        {
-            id_prof:1,
-            id_etudiant:3,
-            send_type: 1,
-            message: "Bonjour Monsieur",
-            date_sent: "2023-03-01 12:00:00",
-        },
-        {
-            id_prof:1,
-            id_etudiant:3,
-            send_type: 2,
-            message: "Bonjour",
-            date_sent: "2023-03-01 12:05:00",
-        }
-    ])
+    const [messages, setMessages] = useState([])
     const [chat,setChat] = useState("")
+    const [profUser,setProfUser]=useState({})
+    const {prof,userId} = localStorage
 
     useEffect(()=>{
-        axios.post('http://localhost:3000/messages/get',
+
+        axios.post('http://localhost:3000/messenger/discussions',
             {
-                id_prof: 1,
-                id_etudiant: 3
+                id_prof: parseInt(prof),
+                id_etudiant: parseInt(userId)
             }
-        ).then(resp=>resp.json()).then(data=>setMessages(data))
+        ).then(data=>setMessages(data.data))
+
+        axios.get('http://localhost:3000/all/prof/'+prof).then(data=>setProfUser(data.data))
+
     },[])
 
-    socket.on("message-client", (data)=>{
-        setMessages([...messages,data])
+    socket.on("message-prof", (data)=>{
+        console.log(data)
     })
 
-    const handleSubmit = async ()=>{
-        const send = await axios.post('http://localhost:3000/messages/save',
-            {
-                id_prof: 1,
-                id_etudiant: 3,
-                send_type: 1,
-                contenu: chat
-            }
-        )
-        console.log(send)
-    }
     return (
         <>
             <Header/>
@@ -56,8 +36,12 @@ const ChatStudent = () => {
                 <div className="menu-chat">
                     <div className="group-chat">
                         <div className="group-profile">
-                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="image" className="menu-chat-picture"/>
-                            <span className="group-name">Français niveau 1</span>
+                            <img 
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" 
+                                alt="image" 
+                                className="menu-chat-picture"
+                            />
+                            <span className="group-name">{profUser.nom_prof +" "+ profUser.prenom_prof}</span>
                         </div>
                     </div>
                 </div>
@@ -91,19 +75,14 @@ const ChatStudent = () => {
                             className="send-message"
                             onClick={(e)=>{
                                 e.preventDefault()
-                                setMessages([...messages,{
-                                    id_prof:1,
-                                    id_etudiant:3,
+                                let mp = {
+                                    id_prof:parseInt(prof),
+                                    id_etudiant:parseInt(userId),
                                     send_type: 1,
-                                    contenu: chat
-                                }])
-                                socket.emit("message-client",{
-                                    id_prof:1,
-                                    id_etudiant:3,
-                                    send_type: 1,
-                                    contenu: chat
-                                })
-                                handleSubmit()
+                                    message: chat
+                                }
+                                socket.emit("message-etudiant",mp)
+                                setMessages([...messages,mp])
                                 setChat("")
                             }}
                         >
