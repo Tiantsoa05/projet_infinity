@@ -14,16 +14,7 @@ const Practice = () => {
     }
 
     const sendWord = async ()=>{
-        // const resp = await axios.get('https://od-api-sandbox.oxforddictionaries.com/api/v2/entries/en-gb/'+mot, 
-        //     {
-        //         headers:{
-        //             app_Id: 'be8a0b02',
-        //             app_key: 'e1c6b57610f256508f57b538c5d33df8'
-        //         }
-        //     }
-        // ).then(response=>response.json())
-
-        // console.log(resp)
+        
         const resp = await axios.post('http://localhost:3000/learn/trad',{
             from:'fr',
             to:langue,

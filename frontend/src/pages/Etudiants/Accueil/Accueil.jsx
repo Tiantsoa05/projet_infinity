@@ -107,7 +107,7 @@ const Accueil = ()=>{
 
                                 if(e.target.value.trim() !== ''){
                                     data.forEach(d=>{
-                                        if(d.nom.includes(e.target.value)){
+                                        if(d.nom_prof.includes(e.target.value)){
                                             setProfs([d])
                                         }
                                     })

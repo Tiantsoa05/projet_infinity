@@ -15,6 +15,7 @@ import ChatStudent from "./pages/Etudiants/Chat/ChatStudent";
 import ProfRegister from "./pages/Enseignants/ProfRegister";
 import Dictionnary from "./components/languages/Dictionnary";
 import Conjugaison from "./components/languages/Conjugaison";
+import SpellCheck from "./pages/Etudiants/Practice/SpellCheck";
 
 
 
@@ -37,7 +38,7 @@ function App() {
           <Route path="/home" element={<Accueil/>}/>
           <Route path="/cours" element={<CourseList />} />
           <Route path="/cours/etudiant/:coursId/lecons" element={<LeconsSectionEtudiants />} />
-          <Route path="/practice" element={<Practice/>}/>
+          <Route path="/practice" element={<SpellCheck/>}/>
           <Route path="/courses" element={<Courses/>} />
           <Route path="/messenger" element={<ChatStudent/>} />
           <Route path="/dictionnary" element={<Dictionnary/>} />
