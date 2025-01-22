@@ -5,6 +5,7 @@ import ChoicesRouter from "./src/routers/ChoicesRouter.js"
 import AuthRouter from './src/routers/AuthRouter.js'
 import AdminRouter from './src/routers/AdminRouter.js'
 import ChatRouter from './src/routers/ChatRouter.js'
+import SpellCheckRouter from './src/routers/Practice/SpellCheckRouter.js'
 import io from "./src/tools/socket-io.js";
 import { send } from "./src/controllers/Etudiants/ChatController.js";
 
@@ -21,6 +22,7 @@ app.use('/auth', AuthRouter)
 app.use('/operations', ChoicesRouter)
 app.use('/all',AdminRouter)
 app.use('/messenger',ChatRouter)
+app.use('/spell',SpellCheckRouter)
 
 // config room meet
 const rooms = new Map()
