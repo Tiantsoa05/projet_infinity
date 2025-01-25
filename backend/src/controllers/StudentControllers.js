@@ -22,3 +22,13 @@ export const getFollowerStudents = async (req, res) => {
 
 };
 
+export const getFollowersNumber = async (req,res)=>{
+  const {id_prof} = req.params
+  const numberFollowers = await prisma.etudiant.count({
+    where:{
+      id_prof: parseInt(id_prof)
+    }
+  })
+
+  res.status(200).json({followers:numberFollowers})
+}

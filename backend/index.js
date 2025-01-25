@@ -6,6 +6,7 @@ import AuthRouter from './src/routers/AuthRouter.js'
 import AdminRouter from './src/routers/AdminRouter.js'
 import ChatRouter from './src/routers/ChatRouter.js'
 import SpellCheckRouter from './src/routers/Practice/SpellCheckRouter.js'
+import CoursRouter from './src/routers/CoursRouter.js'
 import io from "./src/tools/socket-io.js";
 import { send } from "./src/controllers/Etudiants/ChatController.js";
 
@@ -23,6 +24,7 @@ app.use('/operations', ChoicesRouter)
 app.use('/all',AdminRouter)
 app.use('/messenger',ChatRouter)
 app.use('/spell',SpellCheckRouter)
+app.use('/courses',CoursRouter)
 
 // config room meet
 const rooms = new Map()
@@ -46,18 +48,16 @@ io.on("connection",(socket)=>{
 
   // Socket chat service
   socket.on('message-etudiant',(data)=>{
+    io.emit("message-prof",data)
     send(data)
-    socket.emit('message-prof',data)
     console.log({message_etudiant:data})
   })
 
   socket.on('message-prof',(data)=>{
+    io.emit("message-etudiant",data)
     send(data)
-    socket.emit('message-etudiant',data)
     console.log({message_prof:data})
   })
-
-
 
   // Event room
   socket.on('create-room', () => {

@@ -16,6 +16,8 @@ import ProfRegister from "./pages/Enseignants/ProfRegister";
 import Dictionnary from "./components/languages/Dictionnary";
 import Conjugaison from "./components/languages/Conjugaison";
 import SpellCheck from "./pages/Etudiants/Practice/SpellCheck";
+import Follow from "./pages/Etudiants/Accueil/Profs/Follow/Follow";
+import FormPayement from "./components/prof/FormPayement";
 
 
 
@@ -43,6 +45,8 @@ function App() {
           <Route path="/messenger" element={<ChatStudent/>} />
           <Route path="/dictionnary" element={<Dictionnary/>} />
           <Route path="/conjugaison" element={<Conjugaison/>} />
+          <Route path="/follow" element={<Follow/>}/>
+          <Route path="/payer" element={<FormPayement/>}/>
         </Route>
       </Routes> 
     </Router>

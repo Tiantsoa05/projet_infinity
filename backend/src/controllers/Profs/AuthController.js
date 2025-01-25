@@ -67,6 +67,12 @@ export const loginProf = async (req, res) => {
       expiresIn: "3h",
     });
   
+    const langue  = await prisma.langue.findUnique({
+      where:{
+        id_langue: prof.id_langue
+      }
+    })
+
     res.json({ 
       token,
       user:{
@@ -74,7 +80,8 @@ export const loginProf = async (req, res) => {
         nom: prof.nom_prof,
         prenom: prof.prenom_prof,
         email: prof.mail_prof,
-        role: "ENSEIGNANT"
+        role: "ENSEIGNANT",
+        langue: langue.nom_langue
       }
     });
 

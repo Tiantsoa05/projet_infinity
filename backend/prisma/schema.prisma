@@ -57,7 +57,7 @@ model Etudiant {
   id_etudiant     Int      @id @default(autoincrement())
   nom_etudiant    String
   prenom_etudiant String
-  e_mail          String
+  e_mail          String @unique
   Date_Naissance  DateTime
   mdp       String
   id_prof        Int?
@@ -72,10 +72,11 @@ model PayerDroit {
   id             Int       @id @default(autoincrement())
   montant        Float    
   date           DateTime  @default(now())  
+  duree_cours    Int
   id_etudiant    Int       
   etudiant       Etudiant  @relation(fields: [id_etudiant], references: [id_etudiant])
   id_professeur  Int      
-  professeur       Professeur @relation(fields: [id_professeur], references: [id_prof])
+  professeur      Professeur @relation(fields: [id_professeur], references: [id_prof])
 }
 model Discuter{
   id_messages Int @id @default(autoincrement())

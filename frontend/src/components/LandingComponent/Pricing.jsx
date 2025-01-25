@@ -1,78 +1,76 @@
 import { Check } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Pricing() {
   const plans = [
     {
-      name: "Débutant",
-      price: 0,
+      duration:1,
+      price: 5000,
       features: [
-        "Accès à 2 langues",
-        "Leçons basiques",
-        "Tests de niveau",
-        "Support communautaire"
-      ],
-      recommended: false
-    },
-    {
-      name: "Intérmédiaire",
-      price: 60000,
-      features: [
-        "Accès illimité",
-        "Cours avancés",
-        "Conversations avec IA",
-        "Suivi personnalisé",
-        "Support prioritaire"
+        "Leçons structurées",
+        "Exercices et test d'évaluation",
+        "Explications directes accessibles venant du prof"
       ],
       recommended: true
     },
     {
-      name: "Avancé",
-      price: 100000,
+      duration:3,
+      price: 15000,
       features: [
-        "Formations sur mesure",
-        "Langues spécialisées",
-        "Coaching individuel",
-        "Certification",
-        "Support dédié"
+        "Leçons structurées",
+        "Exercices et test d'évaluation",
+        "Explications directes accessibles venant du prof"
       ],
-      recommended: false
+      recommended: true
+    },
+    {
+      duration:6,
+      price: 30000,
+      features: [
+        "Leçons structurées",
+        "Exercices et test d'évaluation",
+        "Explications directes accessibles venant du prof"
+      ],
+      recommended: true
     }
   ];
-
+  const [plan,setPlan]=useState({})
+  const navigate = useNavigate()
+  const handleSubmit = (plan)=>{
+    localStorage.setItem('durationFollow',plan.duration)
+    localStorage.setItem('priceFollow',plan.price)
+    navigate('/payer')
+  }
   return (
-    <section id="prix" className="py-16 bg-gray-50">
+    <section id="prix" className=" bg-gray-50 -mt-2 h-screen ">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
-          Nos <span className="text-blue-600">forfaits</span>
+           <span className="text-blue-600">Forfaits</span>
         </h2>
         
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan) => (
             <div 
-              key={plan.name} 
+              key={plan.duration}  
               className={`
                 bg-white p-6 rounded-lg shadow-md text-center 
                 ${plan.recommended ? 'border-2 border-blue-600 transform scale-105' : ''}
               `}
             >
               <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                {plan.name}
-                {plan.recommended && (
-                  <span className="ml-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
-                    Recommandé
-                  </span>
-                )}
+                {"Abonnement "+plan.duration + " " + "semaine"}{plan.duration>1 && "s"}
               </h3>
               
               <div className="text-4xl font-bold text-blue-600 mb-6">
-                {plan.price === 0 ? 'Gratuit' : `${plan.price}Ar/mois`}
+                {plan.price === 0 ? 'Gratuit' : `${plan.price}Ar`}
               </div>
               
               <ul className="mb-6 space-y-3">
                 {plan.features.map((feature) => (
                   <li 
                     key={feature} 
-                    className="flex items-center justify-center text-gray-700"
+                    className="flex items-center justify-left text-gray-700"
                   >
                     <Check className="text-green-500 mr-2" size={20} />
                     {feature}
@@ -80,7 +78,10 @@ function Pricing() {
                 ))}
               </ul>
               
-              <button className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
+              <button 
+                className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
+                onClick={()=>handleSubmit(plan)}
+              >
                 Choisir ce plan
               </button>
             </div>

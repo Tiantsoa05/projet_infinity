@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChatMessages } from "../../../data/Chat.js";
 import { IoSend } from "react-icons/io5";
 import socket from "../../../tools/socket-io.js";
@@ -11,10 +11,14 @@ const ChatStudent = () => {
     const [chat,setChat] = useState("")
     const [profUser,setProfUser]=useState({})
     const {prof,userId} = localStorage
+    const LastMessRef = useRef(null)
 
     useEffect(()=>{
 
-        axios.post('http://localhost:3000/messenger/discussions',
+        socket.on("message",(data)=>{
+            console.log(data)
+        })
+        axios.post('http://localhost:3000/messenger/discussion/perso',
             {
                 id_prof: parseInt(prof),
                 id_etudiant: parseInt(userId)
@@ -22,12 +26,27 @@ const ChatStudent = () => {
         ).then(data=>setMessages(data.data))
 
         axios.get('http://localhost:3000/all/prof/'+prof).then(data=>setProfUser(data.data))
-
+        
     },[])
+    
+    useEffect(()=>{
+        LastMessRef.current?.scrollIntoView({behavior:'smooth'})
+    },[])
+        
+    useEffect(() => {
+        // Écouter les messages entrants
+        socket.on("message-etudiant", (data) => {
+            console.log("Message reçu de l'étudiant :", data);
+            setMessages((prevMessages) => [...prevMessages, data]);
+        });
 
-    socket.on("message-prof", (data)=>{
-        console.log(data)
-    })
+        // Nettoyer les écouteurs au démontage du composant
+        return () => {
+            socket.off("message-etudiant");
+        };
+    }, []);
+
+    
 
     return (
         <>
@@ -63,6 +82,7 @@ const ChatStudent = () => {
                             ))
                         }
                     </div>
+                    <div ref={LastMessRef}></div>
                     <div className="chat-input">
                         <input 
                             type="text" 

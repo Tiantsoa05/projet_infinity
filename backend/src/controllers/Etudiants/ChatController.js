@@ -29,8 +29,24 @@ export const fetchDiscussion = async (req,res)=>{
         const messages = await prisma.discuter.findMany(
             {
                 where:{
-                    id_prof,
-                    id_etudiant
+                    id_prof
+                }
+            }
+        )
+        res.status(200).json(messages)
+    }catch(error){
+        console.error('Erreur de connexion :', error);
+        res.status(400).json({ message: error.message });
+    }
+}
+
+export const fetchPersoDiscussion = async (req,res)=>{
+    const {id_prof, id_etudiant} = req.body
+    try{
+        const messages = await prisma.discuter.findMany(
+            {
+                where:{
+                    id_prof
                 }
             }
         )

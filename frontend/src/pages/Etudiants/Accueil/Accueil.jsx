@@ -132,7 +132,6 @@ const Accueil = ()=>{
                     {
                         (lessons) && <Lessons/>
                     }
-                    <Post/>
                 </div>
                 <div className="menu liste-profs">
                     <Menus setLessons={setLessons} setExercice={setExercice}/>

@@ -4,7 +4,7 @@ import {
   FileText 
 } from 'lucide-react';
 
-export function OverviewSection() {
+export function OverviewSection({numberStuds}) {
   const statsCards = [
     { 
       icon: BookOpen, 
@@ -15,7 +15,7 @@ export function OverviewSection() {
     { 
       icon: Users, 
       title: 'Étudiants', 
-      value: 156, 
+      value: numberStuds, 
       color: 'green' 
     },
     { 

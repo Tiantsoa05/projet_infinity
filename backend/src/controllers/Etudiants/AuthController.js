@@ -22,15 +22,17 @@ export const register = async (req,res)=>{
 
     
     const etudiant = await prisma.etudiant.create(
-      {data:{
-        nom_etudiant: nom,
-        prenom_etudiant: prenom,
-        e_mail: email,
-        mdp: passHashed,
-        Date_Naissance: datenaiss,
-        id_prof: null,
-        id_niveau: null
-      }}
+      {
+        data:{
+          nom_etudiant: nom,
+          prenom_etudiant: prenom,
+          e_mail: email,
+          mdp: passHashed,
+          Date_Naissance: datenaiss,
+          id_prof: null,
+          id_niveau: null
+        }
+      }
     )
 
     const token = jwt.sign(
@@ -51,17 +53,22 @@ export const register = async (req,res)=>{
 }
 
 export const login = async (req, res) => {
-  const { mail, password } = req.body;
-
+  const { email, password } = req.body;
+console.log(req.body)
   try{
 
-    const etudiant = await prisma.etudiant.findFirst({
-      where: {
-        e_mail: mail,
+    const etudiant = await prisma.etudiant.findUnique({
+      where:{
+        e_mail: email
       }
     });
+    // console.log(etudiant)
+    if(!etudiant){
+      return res.status(401).json({ message: "Email incorrect" });
+    }
   
-    if (!etudiant || !(await bcrypt.compare(password,etudiant.mdp))) {
+    if (!(await bcrypt.compare(password,etudiant.mdp))) {
+      console.log(etudiant)
       return res.status(401).json({ message: "Email ou mot de passe incorrect" });
     }
   

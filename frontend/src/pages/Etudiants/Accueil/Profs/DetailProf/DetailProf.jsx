@@ -18,7 +18,7 @@ const DetailProf = ({prof})=>{
                 <p className="text-sm text-gray-600">Niveau de langue: {prof.Niveau_Etude}</p>
             </div>
             <div className="buttons flex justify-center gap-4">
-                <Link to={"/payer"}>
+                <Link to={"/follow"}>
                     <div className="btn-primary px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">Suivre le prof</div>
                 </Link>
                 <div className="btn-primary px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors cursor-pointer">Ne pas suivre</div>

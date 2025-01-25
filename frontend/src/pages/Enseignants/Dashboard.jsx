@@ -1,34 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Sidebar } from '../components/Navigation/Sidebar';
 import { OverviewSection } from '../components/sections/OverviewSection';
 import { CoursesSection } from '../components/sections/CoursesSection';
 import Navbar from '../components/Navigation/Navbar';
-import ChaInterface from '../components/chat/chatInterface'
-import VideoConference from './VideoConference';
-import socket from '../tools/socket-io';
-import axios from 'axios';
+import CalendarSection from '../components/sections/CalendarSection';
+import ChatInterface from '../components/chat/chatInterface';
 
 function Dashboard() {
   const [activeSection, setActiveSection] = useState('overview');
-  const {prof} = localStorage
-  const [numberStuds,setNumberStuds] = useState(0)
-
-  console.log(localStorage)
-  
-  useEffect(()=>{
-    axios.get('http://localhost:3000/students/number/1').then(data=>setNumberStuds(data.data.followers))
-  },[])
 
   const renderContent = () => {
     switch(activeSection) {
       case 'overview':
-        return <OverviewSection numberStuds={numberStuds}/>;
+        return <OverviewSection />;
       case 'courses':
         return <CoursesSection />;
+      case 'calendar':
+        return <CalendarSection />;
       case 'communications':
-        return <ChaInterface />;
+        return <ChatInterface />;
       default:
-        return <OverviewSection numberStuds={numberStuds} />;
+        return <OverviewSection />;
     }
   };
 

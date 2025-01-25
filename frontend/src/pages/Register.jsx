@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
-import { UserPlus, Mail, Lock, UserCircle, GraduationCap, Languages, Globe } from 'lucide-react';
+import { UserPlus, Mail, Lock, UserCircle, GraduationCap, Languages, Globe , Calendar} from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ConfirmRegister from '../components/Popup/ConfirmRegister';
@@ -17,22 +17,29 @@ const RegisterPage = () => {
     const [error, setError] = useState();
     const navigate = useNavigate();
     const [registerModal,setRegisterModal]= useState(false)
+    const [dateNaissance,setDateNaissance] = useState('2002-01-01')
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         setError('');
         setRegisterModal(false)
-
+        console.log({
+            nom,
+            prenom,
+            datenaiss: new Date(dateNaissance),
+            email,
+            password,
+            role
+        })
         try {
             const response = await axios.post('http://localhost:3000/auth/register', {
                 nom,
                 prenom,
+                datenaiss: new Date(dateNaissance),
                 email,
                 password,
-                confirmPassword,
                 role
-                // niveau_langue: niveauLangue,
-                // langue_maternelle: langueMaternelle
             });
 
             localStorage.setItem('token', response.data.token);
@@ -114,6 +121,27 @@ const RegisterPage = () => {
                                 </div>
                             </div>
 
+                            {/* Date de naissance */}
+                            <div>
+                                <label htmlFor="date-naissance" className="block text-sm font-medium text-gray-700">
+                                    Date de Naissance
+                                </label>
+                                <div className="mt-1 relative rounded-md shadow-sm">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Calendar className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        id="date-naissance"
+                                        name="date-naissance"
+                                        type="date"
+                                        required
+                                        value={dateNaissance}
+                                        onChange={(e) => setDateNaissance(e.target.value)}
+                                        className="pl-10 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    />
+                                </div>
+                            </div>
+
                             {/* Champ Email */}
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -171,7 +199,7 @@ const RegisterPage = () => {
                                     <input
                                         id="confirmpassword"
                                         name="confirmpassword"
-                                        type="confirmpassword"
+                                        type="password"
                                         autoComplete="new-password"
                                         required
                                         value={confirmPassword}
