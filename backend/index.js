@@ -9,6 +9,9 @@ import SpellCheckRouter from './src/routers/Practice/SpellCheckRouter.js'
 import CoursRouter from './src/routers/CoursRouter.js'
 import io from "./src/tools/socket-io.js";
 import { send } from "./src/controllers/Etudiants/ChatController.js";
+import path from 'path'
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const app = express();
 
@@ -16,6 +19,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use(
+  '/uploads',
+  express.static(path.join(__dirname, 'uploads'))
+);
 // Routes
 
 app.use("/students", StudentRouter);

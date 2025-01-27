@@ -44,10 +44,6 @@ export const getProfessorsByLevel = async (req,res)=>{
 
 export const getProfessorById = async (req,res)=>{
     const {id} = req.params
-    const prof = await prisma.professeur.findUnique({
-        where:{
-            id_prof: parseInt(id)
-        }
-    })
+    const prof = await prisma.professeur.findFirst()
     return res.status(200).json(prof)
 }

@@ -18,6 +18,8 @@ import Conjugaison from "./components/languages/Conjugaison";
 import SpellCheck from "./pages/Etudiants/Practice/SpellCheck";
 import Follow from "./pages/Etudiants/Accueil/Profs/Follow/Follow";
 import FormPayement from "./components/prof/FormPayement";
+import StudDashboard from "./pages/Etudiants/Dashboard/StudDashboard";
+import FileViewer from "./components/FileViewer/FileViewer";
 
 
 
@@ -39,6 +41,7 @@ function App() {
           {/*Les routes etudiants */}
           <Route path="/home" element={<Accueil/>}/>
           <Route path="/cours" element={<CourseList />} />
+          <Route path="/stud/dashboard" element={<StudDashboard/>}/>
           <Route path="/cours/etudiant/:coursId/lecons" element={<LeconsSectionEtudiants />} />
           <Route path="/practice" element={<SpellCheck/>}/>
           <Route path="/courses" element={<Courses/>} />
@@ -47,6 +50,7 @@ function App() {
           <Route path="/conjugaison" element={<Conjugaison/>} />
           <Route path="/follow" element={<Follow/>}/>
           <Route path="/payer" element={<FormPayement/>}/>
+          <Route path="/course/view/:id" element={<FileViewer/>} />
         </Route>
       </Routes> 
     </Router>

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 import { useNavigate } from 'react-router-dom';
-import { LANGUAGES } from '../../constants/Languages';
+import { LANGUAGES } from '../../constants/Languages.js';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -15,6 +15,7 @@ function LanguageSelection({ onSelectLanguage }) {
         resp.data.some(dbLang => dbLang.nom_langue === language.name)
       ))
       console.log(l)
+
       setLangues([...l])
     })
 

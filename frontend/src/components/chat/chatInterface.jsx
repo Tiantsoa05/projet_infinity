@@ -16,7 +16,7 @@ const ChatInterface = () => {
 
   const LastMessRef = useRef(null)
 
-  const profId= parseInt(localStorage.getItem('prof'))
+  const profId= parseInt(localStorage.getItem('userId'))
 
   const handleNavigate = () => {
     navigate("/video");
@@ -130,8 +130,8 @@ const ChatInterface = () => {
         {/* Messages Area */}
         <div className="flex-col overflow-y-auto p-4 space-y-4 pr-8">
         {activeChat.map((msg,index) => (
-          <div className={ `flex ${msg.send_type !==1 ? 'justify-end' : 'justify-start'}`}>  
-            <div key={index} className={`chat-message ${msg.send_type !== 1 ? 'self-end bg-green-400 text-white' : 'self-start bg-gray-300 text-black'}`}>
+          <div key={index} className={ `flex ${msg.send_type !==1 ? 'justify-end' : 'justify-start'}`}>  
+            <div  className={`chat-message ${msg.send_type !== 1 ? 'self-end bg-green-400 text-white' : 'self-start bg-gray-300 text-black'}`}>
                 {msg.message}
             </div>
           </div>

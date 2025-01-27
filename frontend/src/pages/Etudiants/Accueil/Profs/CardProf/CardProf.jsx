@@ -1,4 +1,5 @@
 import React from "react";
+import professor from '../../../../../assets/icon_prof.png'
 
 
 export const CardProf = ({ prof, setProf }) => {
@@ -8,11 +9,13 @@ export const CardProf = ({ prof, setProf }) => {
         onClick={()=>setProf(prof)}
     >
         <div className="card-group flex items-center gap-4">
-            <div className="image-prof">
+            <div 
+                className="image-prof w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-gray-100"
+            >
                 <img 
-                    src={prof.image} 
+                    src={professor} 
                     alt="image" 
-                    className="img-fluid rounded-full w-16 h-16 object-cover" 
+                    className="w-full h-full object-cover" 
                 />
             </div>
             <div className="names">

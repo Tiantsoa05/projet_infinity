@@ -4,12 +4,12 @@ import {
   FileText 
 } from 'lucide-react';
 
-export function OverviewSection({numberStuds}) {
+export function OverviewSection({numberStuds, statsLesson}) {
   const statsCards = [
     { 
       icon: BookOpen, 
       title: 'Total Cours', 
-      value: 24, 
+      value: statsLesson, 
       color: 'blue' 
     },
     { 

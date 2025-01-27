@@ -25,6 +25,7 @@
     "dictionary-en": "^4.0.0",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.7",
     "nspell": "^2.1.5",
     "prisma": "^5.22.0",

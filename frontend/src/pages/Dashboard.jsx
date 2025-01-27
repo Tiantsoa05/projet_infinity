@@ -10,19 +10,24 @@ import axios from 'axios';
 
 function Dashboard() {
   const [activeSection, setActiveSection] = useState('overview');
-  const {prof} = localStorage
+  const {userId} = localStorage
   const [numberStuds,setNumberStuds] = useState(0)
+  const [statsLesson,setStatsLesson]=useState(0)
 
   console.log(localStorage)
   
   useEffect(()=>{
-    axios.get('http://localhost:3000/students/number/1').then(data=>setNumberStuds(data.data.followers))
+    axios.get('http://localhost:3000/students/number/'+userId).then(data=>setNumberStuds(data.data.followers))
+    axios.get('http://localhost:3000/courses/number/'+userId).then(data=>setStatsLesson(data.data.numberCourses))
   },[])
 
   const renderContent = () => {
     switch(activeSection) {
       case 'overview':
-        return <OverviewSection numberStuds={numberStuds}/>;
+        return <OverviewSection 
+                  numberStuds={numberStuds} 
+                  statsLesson={statsLesson}
+                />;
       case 'courses':
         return <CoursesSection />;
       case 'communications':

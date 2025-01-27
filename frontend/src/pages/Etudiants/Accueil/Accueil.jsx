@@ -10,63 +10,13 @@ import Post from "./Post/Post.jsx";
 import axios from "axios";
 
 const Accueil = ()=>{
-    const data = [
-        {
-            nom: "Thierry",
-            prenom: "John",
-            image: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-            langue: "Français",
-            diplome: "Doctorat",
-            numero: "123456789",
-            niveau:"debutant",
-            cout:"20$"
-        },
-        {
-            nom: "Gérard",
-            prenom: "Darmanin",
-            image: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-            langue: "Français",
-            diplome: "Doctorat",
-            numero: "123456789",
-            niveau:"debutant",
-            cout:"20$"
-        },
-        {
-            nom: "César",
-            prenom: "Gonzales",
-            image: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-            langue: "Francais",
-            diplome: "Doctorat",
-            numero: "123456789",
-            niveau:"debutant",
-            cout:"20$"
-        },
-        {
-            nom: "Julien",
-            prenom: "Le Roux",
-            image: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-            langue: "Anglais",
-            diplome: "Licence",
-            numero: "123456789",
-            niveau:"debutant",
-            cout:"20$"
-        },
-        {
-            nom: "Marie",
-            prenom: "Dubois",
-            image: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-            langue: "Anglais",
-            diplome: "Licence",
-            numero: "123456789",
-            niveau:"debutant",
-            cout:"20$"
-        }
-    ]
-    const [profs,setProfs] = useState(data)
+    const [data,seData]=useState([]) 
+    const [profs,setProfs] = useState([])
     const [valueSearch,setValueSearch] = useState('')
     const [cliquedProf,setCliquedProf] = useState(null)
     const [lessons,DisplayLessons] = useState(false)
     const [exercice,DisplayExercice] = useState(false)
+    const [noProfFound,setNoProffound]=useState(false)
 
     const setProf = (prof) =>{
         setCliquedProf(prof)
@@ -87,7 +37,10 @@ const Accueil = ()=>{
     }
 
     useEffect(()=>{
-        axios.get('http://localhost:3000/all/profs').then(data=>setProfs(data.data))
+        axios.get('http://localhost:3000/all/profs').then(data=>{
+            setProfs(data.data)
+            seData(data.data)
+        })
     },[])
 
     return (
@@ -108,10 +61,15 @@ const Accueil = ()=>{
                                 if(e.target.value.trim() !== ''){
                                     data.forEach(d=>{
                                         if(d.nom_prof.includes(e.target.value)){
+                                            if(noProfFound)setCliquedProf(false)
                                             setProfs([d])
+                                        }else{
+                                            setNoProffound(true)
+                                            console.log('on le trouve pas ')
                                         }
                                     })
                                 }else{
+                                    setNoProffound(false)
                                     setProfs(data)
                                 }
 
@@ -119,12 +77,18 @@ const Accueil = ()=>{
                         />
                     </div>
                     <div className="list">
-                        <Profs profs={profs} setProf={setProf}/>
+                        
+                        {noProfFound ? (
+                            <div 
+                                className=" mt-5 ml-5 z-50  text-red-700 px-4 py-3 rounded shadow-md w-11/12 max-w-md flex justify-between items-center">
+                                <span className="text-sm">Le nom que vous saisissez est introuvable</span>
+                            </div>                          
+                        ): <Profs profs={profs} setProf={setProf}/>}
                     </div>
                 </div>
                 <div className="details liste-profs h-[50vh] overflow-y-scroll overflow-x-hidden flex-1">
                     {
-                        (cliquedProf !== null) && <DetailProf prof={cliquedProf}/>
+                        (cliquedProf!==null) && <DetailProf prof={cliquedProf} onClose={()=>setCliquedProf(null)}/>
                     }
                     {
                         (exercice) && <Exercice/>
@@ -132,6 +96,7 @@ const Accueil = ()=>{
                     {
                         (lessons) && <Lessons/>
                     }
+                    <Post/>
                 </div>
                 <div className="menu liste-profs">
                     <Menus setLessons={setLessons} setExercice={setExercice}/>

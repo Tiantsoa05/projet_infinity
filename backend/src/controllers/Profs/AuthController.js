@@ -49,13 +49,13 @@ export const registerProf = async (req,res)=>{
 }
 
 export const loginProf = async (req, res) => {
-  const { mail, password } = req.body;
+  const { email, password } = req.body;
 
   try{
 
     const prof = await prisma.professeur.findFirst({
       where: {
-        mail_prof: mail,
+        mail_prof: email,
       }
     });
   

@@ -6,8 +6,13 @@ const prisma = new PrismaClient()
 
 
 export const getAllCourses = async(req,res)=>{
+    const {id_prof} = req.params
     try{
-        const courses= await prisma.cours.findMany()
+        const courses= await prisma.cours.findMany({
+            where:{
+                id_professeur: parseInt(id_prof)
+            }
+        })
         res.status(200).json(courses)
     }catch(error){
         console.error('Erreur  :', error);
@@ -34,7 +39,7 @@ export const getProfCoursesNumber = async (req,res)=>{
 export const createCourse = async (req,res)=>{
 
     const {titre,id_langue,id_prof} = req.body
-    console.log(req, req.body)
+
     const fichier = req.file
 
     if (!fichier) {
@@ -50,11 +55,11 @@ export const createCourse = async (req,res)=>{
         })
 
         const fileSize = fichier.size; 
-        const ext = path.extname(fichier);
-        const fileName = [fichier.filename,ext].join('');
-        const allowedTypes = ['.pdf', '.mp4','.mp3', '.jpeg', '.jpg', '.jpeg'];
+        const ext = path.extname(fichier.originalname).toLowerCase(); 
+        const fileName = `${fichier.filename}${ext}`;
+        const allowedTypes = ['.pdf', '.mp4', '.mp3', '.jpeg', '.jpg'];
 
-        const TypeFilePath = null
+        let TypeFilePath = null
 
         switch (ext){
             case allowedTypes[0]:
@@ -75,6 +80,7 @@ export const createCourse = async (req,res)=>{
 
         const fichierPath = path.resolve(
             path.dirname('uploads'),
+            'uploads',
             `${owner.nom_prof.toLocaleLowerCase()}_${owner.prenom_prof.toLocaleLowerCase()}`,
             TypeFilePath,
             fileName
@@ -82,18 +88,28 @@ export const createCourse = async (req,res)=>{
         // const url = `${req.protocol}://${req.get("host")}/assets/fournisseur/${fileName}`;
 
         if (!allowedTypes.includes(ext.toLowerCase())) {
+            fs.unlink(fichier.path, (err) => {
+                if (err) {
+                    console.error("Erreur lors de la suppression du fichier:", err);
+                }
+            });
             return res.status(400).json({ messageError: "Fichier invalide" });
         }
         if (fileSize > 50000000) {
+            fs.unlink(fichier.path, (err) => {
+                if (err) {
+                    console.error("Erreur lors de la suppression du fichier:", err);
+                }
+            });
             return res.status(400).json({ messageError: "Image devrait être moins de 50 MB" });
         }
 
         const dir = path.dirname(fichierPath);
-        if (!existsSync(dir)) {
-            mkdirSync(dir, { recursive: true });
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
         }
 
-        fs.rename(fichier.path, imagePath, async (err) => {
+        fs.rename(fichier.path, fichierPath, async (err) => {
             if (err) return res.status(500).json({ messageError: err.message });
 
             try {
@@ -114,6 +130,11 @@ export const createCourse = async (req,res)=>{
         });
 
     } catch (error) {
+        fs.unlink(fichier.path, (err) => {
+            if (err) {
+                console.error("Erreur lors de la suppression du fichier:", err);
+            }
+        });
         res.status(500).send({ errorMessage: "Internal server error" });
         console.error(error);
     }

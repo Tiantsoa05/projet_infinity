@@ -1,23 +1,42 @@
-import React,{useState} from "react";
+import React,{useState ,useEffect} from "react";
 import PostCard from "./PostCard/PostCard.jsx";
 import "./Post.css";
-import PostImage  from "../../../../assets/post.png"
+import axios from 'axios'
+import {LANGUAGES} from '../../../../constants/Languages.js'
 
 const Post = () => {
-    const [post, setPost] = useState([
-        {
-            id: 1,
-            title: "Mon premier post",
-            content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, purus sed semper pulvinar, ex mauris finibus lectus, at condimentum turpis nisi vel ligula.",
-            author: {
-                id: 1,
-                name: "John Doe",
-                avatar: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
-                job: "Développeur front-end"
-            },
-            image:PostImage
-        }
-    ]);
+    const [post, setPost] = useState([]);
+    useEffect(()=>{
+        axios.get('http://localhost:3000/all/profs').then(
+            res=> {
+
+                res.data.map(prof=>{
+                    const {
+                        id_prof,
+                        nom_prof,
+                        prenom_prof,
+                        Niveau_Etude,
+                        langue,
+                        mail_prof
+                    }=prof
+
+                    let l = LANGUAGES.find(language =>language.name === langue.nom_langue)
+
+                    setPost(
+                        [...post,{
+                            id:id_prof,
+                            langue: langue.nom_langue,
+                            nom: [nom_prof,prenom_prof].join(' '),
+                            experience: Niveau_Etude,
+                            icon: l.icon,
+                            mail: mail_prof
+                        }]
+    
+                    )
+                })
+            }
+        )
+    },[])
     return (
         <div className="overflow-x-hidden">
             {

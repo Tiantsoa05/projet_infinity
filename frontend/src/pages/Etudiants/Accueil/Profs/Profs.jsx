@@ -3,7 +3,7 @@ import { CardProf } from "./CardProf/CardProf.jsx";
 import "./Profs.css"
 
 export const Profs = ({profs,setProf}) => {
-    console.log(profs)
+
     return (
         <div className="liste-prof flex flex-col gap-2 overflow-x-hidden">
             {

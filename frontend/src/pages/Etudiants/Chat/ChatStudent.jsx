@@ -13,6 +13,7 @@ const ChatStudent = () => {
     const {prof,userId} = localStorage
     const LastMessRef = useRef(null)
 
+    console.log(localStorage)
     useEffect(()=>{
 
         socket.on("message",(data)=>{
