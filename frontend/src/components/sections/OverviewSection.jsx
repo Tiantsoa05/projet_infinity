@@ -4,7 +4,7 @@ import {
   FileText 
 } from 'lucide-react';
 
-export function OverviewSection({numberStuds, statsLesson}) {
+export function OverviewSection({numberStuds,statsLesson}) {
   const statsCards = [
     { 
       icon: BookOpen, 

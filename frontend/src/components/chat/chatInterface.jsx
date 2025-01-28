@@ -97,26 +97,28 @@ const ChatInterface = () => {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col h-screen">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Chat Header */}
         <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <span className="text-blue-600 font-semibold">S</span>
-            </div>
-            <div className="ml-4">
-              <h2 className="text-lg font-semibold text-gray-800">
-              { 
-                activeChat.length > 0 
-                  ? followers.find(f => f.id_etudiant === activeChat[0].id_etudiant)?.nom_etudiant 
-                    + " " 
-                    + followers.find(f => f.id_etudiant === activeChat[0].id_etudiant)?.prenom_etudiant 
-                  : " "
-              }
-              </h2>
-              <p className="text-sm text-green-500">En ligne</p>
-            </div>
-          </div>
+          {activeChat &&
+              <div className="flex items-center bg-white">
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold">S</span>
+                </div>
+                <div className="ml-4">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                  { 
+                    activeChat.length > 0 
+                      ? followers.find(f => f.id_etudiant === activeChat[0].id_etudiant)?.nom_etudiant 
+                        + " " 
+                        + followers.find(f => f.id_etudiant === activeChat[0].id_etudiant)?.prenom_etudiant 
+                      : "" 
+                  }
+                  </h2>
+                  <p className="text-sm text-green-500">En ligne</p>
+                </div>
+              </div>
+          }
           <div className="flex space-x-4">
             <button onClick={handleNavigate} className="p-2 hover:bg-gray-100 rounded-full">
               <Phone className="w-5 h-5 text-gray-600" />
@@ -128,14 +130,20 @@ const ChatInterface = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-col overflow-y-auto p-4 space-y-4 pr-8">
-        {activeChat.map((msg,index) => (
-          <div key={index} className={ `flex ${msg.send_type !==1 ? 'justify-end' : 'justify-start'}`}>  
-            <div  className={`chat-message ${msg.send_type !== 1 ? 'self-end bg-green-400 text-white' : 'self-start bg-gray-300 text-black'}`}>
-                {msg.message}
+        <div className="flex-col overflow-y-auto p-4 space-y-4 pr-8 h-screen">
+        {
+          activeChat.length === 0 ?
+          <div className="flex items-center justify-center h-full text-gray-600 text-lg font-medium ">
+            Vous n'avez aucune discussion pour le moment
+          </div> :
+          activeChat.map((msg,index) => (
+            <div key={index} className={ `flex ${msg.send_type !==1 ? 'justify-end' : 'justify-start'}`}>  
+              <div  className={`chat-message ${msg.send_type !== 1 ? 'self-end bg-green-400 text-white' : 'self-start bg-gray-300 text-black'}`}>
+                  {msg.message}
+              </div>
             </div>
-          </div>
-          ))}
+          ))
+        }
           <div ref={LastMessRef}></div>
         </div>
 

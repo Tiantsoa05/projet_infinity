@@ -11,14 +11,9 @@ export function CoursesSection() {
   const [showModal, setShowModal] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
   const [alert, setAlert] = useState({ type: '', message: '' });
-  const [formData, setFormData] = useState({
-    nom: '',
-    description: '',
-    langue: '',
-    niveau_difficulte: 'debutant',
-    duree: 0,
-    prix: 0
-  });
+  const id_prof = localStorage.getItem("userId")
+  const id_langue = localStorage.getItem('idLangue')
+  const [titre,setTitre]= useState('')
 
   const [fichier,setFichier] = useState(null)
 
@@ -28,7 +23,7 @@ export function CoursesSection() {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/courses/all/1');
+      const response = await axios.get('http://localhost:3000/courses/all/'+id_prof);
       setCourses(response.data);
     } catch (error) {
       setAlert({ type: 'error', message: 'Erreur lors du chargement des cours' });
@@ -38,33 +33,56 @@ export function CoursesSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (currentCourse) {
-        await axios.put(`http://localhost:3000/cours/${currentCourse.id_cours}`, formData);
-        setAlert({ type: 'success', message: 'Cours mis à jour avec succès' });
-      } else {
-        await axios.post('http://localhost:3000/cours', formData);
-        setAlert({ type: 'success', message: 'Cours créé avec succès' });
+      const formDataToSend = new FormData();
+      formDataToSend.append('id_prof', parseInt(id_prof));
+      formDataToSend.append('id_langue', parseInt(id_langue)); 
+      formDataToSend.append('titre', titre);
+      formDataToSend.append('fichier', fichier);
+      
+      if(currentCourse){
+
+        await axios.post(`http://localhost:3000/courses/update/${currentCourse.id}`, formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(res=>{
+          setAlert({ type: 'success', message: 'Cours modifié avec succès' })
+          setShowModal(false);
+          setCurrentCourse(null);
+          fetchCourses();
+          setFichier(null);
+        })
+        .catch(error=>console.log(error))
+
+      }else{
+
+        await axios.post('http://localhost:3000/courses/new', formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }).then(res=>{
+          setAlert({ type: 'success', message: 'Cours créé avec succès' })
+          setShowModal(false);
+          setCurrentCourse(null);
+          fetchCourses();
+          setFichier(null);
+        })
+        .catch(error=>console.log(error))
+        
       }
-      fetchCourses();
-      setShowModal(false);
-      setCurrentCourse(null);
-      setFormData({
-        nom: '',
-        description: '',
-        langue: '',
-        niveau_difficulte: 'debutant',
-        duree: 0,
-        prix: 0
-      });
+
+ 
     } catch (error) {
+      console.error('Erreur lors de l\'envoi des données :', error);
       setAlert({ type: 'error', message: 'Une erreur est survenue' });
     }
-  };
+  }
+  useEffect(()=>{
+    console.log(fichier)
+  },[fichier])
 
   const handleDelete = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
       try {
-        await axios.delete(`http://localhost:3000/cours/${id}`);
+        await axios.get(`http://localhost:3000/courses/delete/${id}`).then(resp=>{
+          console.log(resp.data)
+        })
         fetchCourses();
         setAlert({ type: 'success', message: 'Cours supprimé avec succès' });
       } catch (error) {
@@ -88,15 +106,6 @@ export function CoursesSection() {
     <button
       onClick={() => {
         setCurrentCourse(null);
-        setFormData({
-          nom: '',
-          description: '',
-          langue: '',
-          niveau_difficulte: 'debutant',
-          duree: 0,
-          prix: 0,
-          contenu: null, // Ajout du champ contenu pour le fichier
-        });
         setShowModal(true);
       }}
       className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
@@ -135,7 +144,8 @@ export function CoursesSection() {
             <button
               onClick={() => {
                 setCurrentCourse(course);
-                setFormData(course);
+                setTitre(course.titre)
+                setFichier(course.contenu_cours)
                 setShowModal(true);
               }}
               className="text-gray-600 hover:text-gray-800"
@@ -151,7 +161,7 @@ export function CoursesSection() {
           </div>
         </div>
         <p className="text-gray-600 mb-4">{course.description}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-500">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-500">
           <div className="flex items-center gap-2">
             <Globe size={16} />
             {course.langue}
@@ -167,7 +177,7 @@ export function CoursesSection() {
           <div className="flex items-center gap-2">
             <span className="font-medium">{course.prix}Ar</span>
           </div>
-        </div>
+        </div> */}
       </div>
     ))}
   </div>
@@ -194,42 +204,30 @@ export function CoursesSection() {
           </p>
         </div>
 
-        {/* Corps de la modale */}
+        {/* Corps de la création de cours */}
         <form onSubmit={handleSubmit}>
           <div className="p-6 space-y-6">
+
             {/* Section Informations Générales */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-800 flex items-center gap-2">
                 <BookOpen size={20} />
-                Informations Générales
+                Ajout d'un noveau cours
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nom du cours *
+                    Titre du cours *
                   </label>
                   <input
                     type="text"
-                    value={formData.nom}
-                    onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+                    value={titre}
+                    onChange={(e) => setTitre(e.target.value)}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     required
                     placeholder="Ex: Apprendre le Francais"
                   />
                 </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
-                </label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  rows="3"
-                  placeholder="Décrivez le contenu et les objectifs du cours..."
-                />
               </div>
             </div>
 
@@ -269,7 +267,7 @@ export function CoursesSection() {
                   id="dropzone-file" 
                   type="file" 
                   className="hidden" 
-                  onChange={(e)=>console.log(e.target.files)}
+                  onChange={(e)=>setFichier(e.target.files[0])}
                 />
               </label>
             </div>

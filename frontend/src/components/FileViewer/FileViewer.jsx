@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Viewer,Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { pdfjs } from 'react-pdf';
@@ -80,18 +80,19 @@ const FileViewer = () => {
               </video>
             </div>
           ) : fileType === "pdf" ? (
-            <div className="relative w-full h-[80vh] rounded-lg overflow-hidden shadow-md border bg-white">
-              {/* Utilisation du plugin pour afficher le PDF */}
-              <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.js">
-                <div style={{ height: '750px' }}>
-                  <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
-                </div>
-              </Worker>
-            </div>
+            // <div className="relative w-full h-[80vh] rounded-lg overflow-hidden shadow-md border bg-white">
+            //   {/* Utilisation du plugin pour afficher le PDF */}
+            //   <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.js">
+            //     <div style={{ height: '750px' }}>
+            //       <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
+            //     </div>
+            //   </Worker>
+            // </div>
+            <Link to={fileUrl} target="_blank" rel="noopener noreferrer" >
+              <div>{actualCourse.titre}.pdf</div>
+            </Link>
           ) : (
-            <div className="text-center text-red-500">
-              Type de fichier non pris en charge.
-            </div>
+            <img src={fileUrl} alt={actualCourse.titre} />
           )}
         </div>
       </div>

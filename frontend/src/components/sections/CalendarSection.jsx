@@ -203,7 +203,7 @@ const CalendarSection = () => {
             className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors text-sm"
           >
             <Plus className="h-4 w-4" />
-            Nouveau cours
+            Nouveau programme
           </button>
         </div>
 

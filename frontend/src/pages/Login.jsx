@@ -20,20 +20,28 @@ const LoginPage = () => {
                 password
             });
 
+            const {  user } = response.data
+
             // Vérification de la présence des données nécessaires
             if (!response.data.token || !response.data.user) {
                 throw new Error('Données de connexion incomplètes');
             }
 
+
             // Stockage des informations
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('userId', response.data.user.id);
-            localStorage.setItem('userRole', response.data.user.role);
-            localStorage.setItem('userName', `${response.data.user.prenom} ${response.data.user.nom}`);
-            localStorage.setItem('prof',response.data.user.prof)
+            localStorage.setItem('token', user.token);
+            localStorage.setItem('userId', user.id);
+            localStorage.setItem('userRole', user.role);
+            localStorage.setItem('userName', `${user.prenom} ${user.nom}`);
+
+            if(user.role === 'ETUDIANT'){
+                localStorage.setItem('prof',user.prof)
+            }else{
+                localStorage.setItem('idLangue',user.id_langue)
+            }      
 
             // Redirection basée sur le rôle
-            switch (response.data.user.role) {
+            switch (user.role) {
                 case 'ADMIN':
                     navigate('/dashboard');
                     break;

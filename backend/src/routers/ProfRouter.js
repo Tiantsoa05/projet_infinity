@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getAllProfs } from "../controllers/ProfController.js";
+import { paySubscribeProf } from "../controllers/ProfController.js";
 
 const router = Router();
 
-router.get("/all",getAllProfs)
+router.post('/subscribe',paySubscribeProf)
 
 export default router;

@@ -1,6 +1,7 @@
 import React from "react";
 import professor from '../../../../../assets/professor.png'
 import {Mail} from 'lucide-react'
+import { Link } from "react-router-dom";
 
 const PostCard = ({ post }) => {
   return (
@@ -24,9 +25,14 @@ const PostCard = ({ post }) => {
 
   {/* Boutons */}
   <div className="post-buttons flex justify-between gap-4">
-    <button className="w-full py-3 text-center cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-600 hover:shadow-md transition-all duration-300">
+  <Link to={"/follow"}
+    className="w-full py-3 text-center cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-600 hover:shadow-md transition-all duration-300"
+    onClick={()=>localStorage.setItem('idFollow',post.id)}
+  >
+    <button>
       Suivre ce prof
     </button>
+  </Link>
   </div>
 </div>
 

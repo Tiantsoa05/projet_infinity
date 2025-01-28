@@ -4,6 +4,7 @@ import { Header } from '../../Header/Header'
 import './Follow.css'
 
 const Follow = () => {
+  // console.log(localStorage)
   return (
     <div className='overflow-hidden'>
         <Header/>

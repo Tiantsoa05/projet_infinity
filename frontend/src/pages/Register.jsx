@@ -165,50 +165,68 @@ const RegisterPage = () => {
                                 </div>
                             </div>
 
+                            <div>
                             {/* Champ Mot de Passe */}
                             <div>
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                    Mot de Passe
+                                Mot de Passe
                                 </label>
                                 <div className="mt-1 relative rounded-md shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <input
-                                        id="password"
-                                        name="password"
-                                        type="password"
-                                        autoComplete="new-password"
-                                        required
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="pl-10 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                        placeholder="Votre mot de passe"
-                                    />
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-gray-400" />
+                                </div>
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    autoComplete="new-password"
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="pl-10 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="Votre mot de passe"
+                                />
                                 </div>
                             </div>
 
-                            <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                    Confirmer mot de Passe
+                            {/* Champ Confirmation Mot de Passe */}
+                            <div className="mt-4">
+                                <label htmlFor="confirmpassword" className="block text-sm font-medium text-gray-700">
+                                Confirmer mot de Passe
                                 </label>
                                 <div className="mt-1 relative rounded-md shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <input
-                                        id="confirmpassword"
-                                        name="confirmpassword"
-                                        type="password"
-                                        autoComplete="new-password"
-                                        required
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="pl-10 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                        placeholder="Confirmez votre mot de passe"
-                                    />
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-gray-400" />
                                 </div>
+                                <input
+                                    id="confirmpassword"
+                                    name="confirmpassword"
+                                    type="password"
+                                    autoComplete="new-password"
+                                    required
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className={`pl-10 block w-full py-2 px-3 border ${
+                                    password !== confirmPassword && confirmPassword !== ""
+                                        ? "border-red-500"
+                                        : "border-gray-300"
+                                    } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
+                                    password !== confirmPassword && confirmPassword !== ""
+                                        ? "focus:ring-red-500 focus:border-red-500"
+                                        : "focus:ring-blue-500 focus:border-blue-500"
+                                    } sm:text-sm`}
+                                    placeholder="Confirmez votre mot de passe"
+                                />
+                                </div>
+                                {/* Message d'erreur */}
+                                {password !== confirmPassword && confirmPassword !== "" && (
+                                <p className="mt-2 text-sm text-red-600">
+                                    Les mots de passe doivent correspondre.
+                                </p>
+                                )}
                             </div>
+                            </div>
+
 
                             {/* Bouton d'Inscription */}
                             <div>

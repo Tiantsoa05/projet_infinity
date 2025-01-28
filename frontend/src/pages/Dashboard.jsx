@@ -4,6 +4,8 @@ import { OverviewSection } from '../components/sections/OverviewSection';
 import { CoursesSection } from '../components/sections/CoursesSection';
 import Navbar from '../components/Navigation/Navbar';
 import ChaInterface from '../components/chat/chatInterface'
+import Exam from './Exam';
+import CalendarSection from '../components/sections/CalendarSection';
 import VideoConference from './VideoConference';
 import socket from '../tools/socket-io';
 import axios from 'axios';
@@ -21,19 +23,24 @@ function Dashboard() {
     axios.get('http://localhost:3000/courses/number/'+userId).then(data=>setStatsLesson(data.data.numberCourses))
   },[])
 
+  useEffect(()=>{
+    console.log({numberStuds,statsLesson})
+  },[numberStuds,statsLesson])
+
   const renderContent = () => {
     switch(activeSection) {
       case 'overview':
-        return <OverviewSection 
-                  numberStuds={numberStuds} 
-                  statsLesson={statsLesson}
-                />;
+        return <OverviewSection numberStuds={numberStuds} statsLesson={statsLesson}/>;
       case 'courses':
         return <CoursesSection />;
+      case 'exam':
+        return <Exam />;
       case 'communications':
         return <ChaInterface />;
+      case 'calendar':
+        return <CalendarSection />;  
       default:
-        return <OverviewSection numberStuds={numberStuds} />;
+        return <OverviewSection numberStuds={numberStuds} statsLesson={statsLesson}/>;
     }
   };
 

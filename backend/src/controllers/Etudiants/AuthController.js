@@ -165,7 +165,8 @@ export const login = async (req, res) => {
         prenom:  user.prenom_prof,
         email: user.mail_prof,
         role: "ENSEIGNANT" ,
-        langue : langue.nom_langue
+        langue : langue.nom_langue,
+        id_langue: user.id_langue
       };
     }else{
       userDetails = {

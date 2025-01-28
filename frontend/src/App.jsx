@@ -20,6 +20,7 @@ import Follow from "./pages/Etudiants/Accueil/Profs/Follow/Follow";
 import FormPayement from "./components/prof/FormPayement";
 import StudDashboard from "./pages/Etudiants/Dashboard/StudDashboard";
 import FileViewer from "./components/FileViewer/FileViewer";
+import ExercicePage from "./components/sections/ExercicePage";
 
 
 
@@ -32,7 +33,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage/>} />
         <Route path="/register_prof" element={<ProfRegister/>}/>
-        <Route path="/meet" element={<VideoConference />} />
+        {/* <Route path="/meet" element={<VideoConference />} /> */}
+        
         <Route element={<ProtectedRoute />}>
           {/* Les routes pour les prof */}
           <Route path="/dashboard" element={<Dashboard />}/>
@@ -51,6 +53,10 @@ function App() {
           <Route path="/follow" element={<Follow/>}/>
           <Route path="/payer" element={<FormPayement/>}/>
           <Route path="/course/view/:id" element={<FileViewer/>} />
+        
+          {/* Route pour les exercices */}
+          <Route path="/lecons/:leconId/exercices" element={<ExercicePage />} />
+
         </Route>
       </Routes> 
     </Router>

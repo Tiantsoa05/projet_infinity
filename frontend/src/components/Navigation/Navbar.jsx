@@ -68,7 +68,7 @@ const Navbar = ({ currentLanguage = null, userProfile = null, onLogout }) => {
     const handleMouseLeave = () => {
       timeoutId = setTimeout(() => {
         setIsOpen(false);
-      }, 150); // Délai avant la fermeture pour permettre le mouvement vers le menu
+      }, 150);
     };
 
     return (
