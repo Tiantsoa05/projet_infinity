@@ -24,17 +24,17 @@ model Langue {
 model Professeur {
   id_prof         Int      @id @default(autoincrement())
   nom_prof        String
-  prenom_prof    String
-  mail_prof    String
-  mdp_prof   String
-  Diplome String
-  Niveau_Etude String
-  id_langue    Int
-  langue      Langue    @relation(fields: [id_langue], references: [id_langue])
-  cours       Cours[]
-  payment     PayerDroit[]
-  Discuter    Discuter[]
-  Etudiant    Etudiant[]
+  prenom_prof     String
+  mail_prof       String
+  mdp_prof        String
+  Diplome         String
+  num_phone       String?
+  id_langue       Int
+  langue          Langue    @relation(fields: [id_langue], references: [id_langue])
+  cours           Cours[]
+  payment         PayerDroit[]
+  Discuter        Discuter[]
+  Etudiant        Etudiant[]
 }
 
 model Niveau{

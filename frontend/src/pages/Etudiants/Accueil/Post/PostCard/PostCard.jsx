@@ -1,9 +1,12 @@
 import React from "react";
 import professor from '../../../../../assets/professor.png'
-import {Mail} from 'lucide-react'
+import {Mail, Phone} from 'lucide-react'
 import { Link } from "react-router-dom";
 
 const PostCard = ({ post }) => {
+
+  const followedProf = localStorage.getItem("prof")
+
   return (
     <div className="post-card p-6 shadow-lg rounded-lg bg-white border border-gray-200 hover:shadow-xl transition-shadow duration-300">
   {/* Profil de l'auteur */}
@@ -16,7 +19,7 @@ const PostCard = ({ post }) => {
     <div className="post-details ml-8">
       <h5 className="text-xl font-bold text-gray-800">{post.nom}</h5>
       <p className="text-sm text-gray-500">Langue enseignée : <span className="font-medium">{post.langue + " " + post.icon}</span></p>
-      <p className="text-sm text-gray-500">Expérience : <span className="font-medium">{post.experience}</span></p>
+      <p className="text-sm text-gray-500 flex gap-2"><Phone/> <span className="font-medium">{post.telephone}</span></p>
       <p className="text-sm text-gray-600 flex gap-2">
         <Mail size={18}/>
         <span className="font-medium">{post.mail}</span></p>
@@ -25,12 +28,17 @@ const PostCard = ({ post }) => {
 
   {/* Boutons */}
   <div className="post-buttons flex justify-between gap-4">
-  <Link to={"/follow"}
-    className="w-full py-3 text-center cursor-pointer bg-blue-500 text-white rounded-full hover:bg-blue-600 hover:shadow-md transition-all duration-300"
+  <Link 
+    to={
+      (!isNaN(followedProf) && parseInt(followedProf) === post.id) ? 
+      null : 
+      "/follow"
+    }
+    className={`w-full py-3 text-center cursor-pointer ${(!isNaN(followedProf) && parseInt(followedProf) === post.id)?"text-white bg-gray-600":"bg-blue-500  text-white hover:bg-blue-600"}  rounded-full  hover:shadow-md transition-all duration-300`}
     onClick={()=>localStorage.setItem('idFollow',post.id)}
   >
     <button>
-      Suivre ce prof
+      { (!isNaN(followedProf) && parseInt(followedProf) === post.id)?"Déjà suivi":"Suivre ce prof"}
     </button>
   </Link>
   </div>

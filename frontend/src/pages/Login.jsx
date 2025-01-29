@@ -29,7 +29,7 @@ const LoginPage = () => {
 
 
             // Stockage des informations
-            localStorage.setItem('token', user.token);
+            localStorage.setItem('token', response.data.token);
             localStorage.setItem('userId', user.id);
             localStorage.setItem('userRole', user.role);
             localStorage.setItem('userName', `${user.prenom} ${user.nom}`);

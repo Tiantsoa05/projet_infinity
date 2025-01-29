@@ -5,6 +5,7 @@ import {
     UserCircle,
     GraduationCap,
     BrainCircuit,
+    Phone,
   } from "lucide-react";
   import { Link, useNavigate } from "react-router-dom";
   import axios from "axios";
@@ -33,7 +34,7 @@ import {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [role] = useState("ENSEIGNANT");
     const [diplome, setDiplome] = useState("");
-    const [niveau, setNiveau] = useState("");
+    const [phone, setPhone] = useState("");
     const [langueEnseigner, setLangueEnseigner] = useState("");
     const [error, setError] = useState(null);
     const [registerModal, setRegisterModal] = useState(false);
@@ -64,7 +65,7 @@ import {
             password,
             role,
             diplome,
-            niveau_etude: niveau,
+            num_phone: phone,
             id_langue: parseInt(langueEnseigner)
           }
         );
@@ -142,10 +143,10 @@ import {
   
               {/* Niveau d'études */}
               <InputField
-                label="Niveau d'études"
-                value={niveau}
-                onChange={(e) => setNiveau(e.target.value)}
-                icon={BrainCircuit}
+                label="Numero téléphone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                icon={Phone}
                 placeholder="Votre niveau d'études"
               />
   

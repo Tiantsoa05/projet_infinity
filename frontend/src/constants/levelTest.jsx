@@ -56,19 +56,33 @@ export const LEVEL_TEST = {
   };
   
   export const calculateLevel = (levelTestAnswers) => {
-    const intermediateCount = Object.values(levelTestAnswers).filter(
-      ans => ans.includes("avec") || ans.includes("parfois")
-    ).length;
+    // const intermediateCount = Object.values(levelTestAnswers).filter(
+    //   ans => ans.includes("avec") || ans.includes("parfois")
+    // ).length;
   
-    const advancedCount = Object.values(levelTestAnswers).filter(
-      ans => ans.includes("aisance") || ans.includes("aisément")
-    ).length;
+    // const advancedCount = Object.values(levelTestAnswers).filter(
+    //   ans => ans.includes("aisance") || ans.includes("aisément")
+    // ).length;
   
-    if (advancedCount >= 2) {
-      return 'avance';
-    } else if (intermediateCount >= 2) {
-      return 'intermediaire';
-    } else {
-      return 'debutant';
-    }
+    // if (advancedCount >= 2) {
+    //   return 'avance';
+    // } else if (intermediateCount >= 2) {
+    //   return 'intermediaire';
+    // } else {
+    //   return 'debutant';
+    // }
+
+    let note = 0
+    let level = ''
+
+    levelTestAnswers.map(lta=>{
+      if(lta.answer===lta.trueResponse){
+        note += lta.note
+      }
+    })
+
+    level = (note<10) ? "débutant" : (note>=10 && note<15) ? "intermédiaire" : "avancé"
+
+    return {note,level}
+
   };

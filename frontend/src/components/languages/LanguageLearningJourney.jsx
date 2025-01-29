@@ -8,16 +8,20 @@ import Navbar from './Navbar';
 function LanguageLearningJourney() {
   const [step, setStep] = useState('language-selection');
   const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const [finalLevel, setFinalLevel] = useState(null);
+  const [finalLevel, setFinalLevel] = useState("");
+  const [finalNote,setfinalNote] = useState(0)
 
   const selectLanguage = (language) => {
+    console.log(language)
     setSelectedLanguage(language);
     setStep('level-test');
   };
 
   const handleLevelTestComplete = (levelTestAnswers) => {
-    const level = calculateLevel(levelTestAnswers);
-    setFinalLevel(level);
+    const final = calculateLevel(levelTestAnswers);
+    console.log(final)
+    setFinalLevel(final.level);
+    setfinalNote(final.note)
     setStep('level-result');
   };
 
@@ -52,6 +56,7 @@ function LanguageLearningJourney() {
         <LevelResult 
           selectedLanguage={selectedLanguage}
           finalLevel={finalLevel}
+          finalNote={finalNote}
           onStartLearningJourney={startLearningJourney}
         />
       )}

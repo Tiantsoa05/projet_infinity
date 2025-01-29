@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt'
 const prisma = new PrismaClient();
 
 export const registerProf = async (req,res)=>{
-  const { nom, prenom, email, password, diplome, niveau_etude, id_langue } = req.body
+  const { nom, prenom, email, password, diplome, phone, id_langue } = req.body
   try{
     const existingProf = await prisma.professeur.findFirst({where:{mail_prof: email}})
     const existingUser = await prisma.etudiant.findFirst({where:{e_mail: email}})
@@ -26,7 +26,7 @@ export const registerProf = async (req,res)=>{
         mail_prof: email,
         mdp_prof: passHashed,
         Diplome: diplome,
-        Niveau_Etude: niveau_etude,
+        num_phone: phone,
         id_langue: parseInt(id_langue)
       }
     })

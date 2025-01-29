@@ -30,6 +30,8 @@ const FormPayement = () => {
       id_prof: parseInt(localStorage.getItem('idFollow')),
       id_etudiant: parseInt(localStorage.getItem('userId'))
     }).then(res=>{
+      console.log(res.data)
+      localStorage.setItem('prof', parseInt(localStorage.getItem('idFollow')))
       setPaymentSuccess(true);
       closeModal();
     }).catch(

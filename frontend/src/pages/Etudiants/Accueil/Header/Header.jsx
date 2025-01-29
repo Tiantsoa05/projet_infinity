@@ -18,6 +18,7 @@ export const Header = () => {
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
     const navigate = useNavigate()
     const location = useLocation()
+    const prof = (localStorage.getItem('prof'))
 
     useEffect(()=>{
       const {prof}=localStorage
@@ -47,14 +48,14 @@ export const Header = () => {
     }
 
     const handleLogout = () => {
-      localStorage.removeItem('token')
+      localStorage.clear()
       setIsAuthenticated(false)
-      setIsLogoutModalOpen(false) // Ferme le modal
+      setIsLogoutModalOpen(false)
       navigate("/")
     }
 
     useEffect(() => {
-
+      
       const token = localStorage.getItem('token');
       setIsAuthenticated(!!token);
 
@@ -91,21 +92,24 @@ export const Header = () => {
             </div>
           )
         }
-      <div className="messages notif relative">
-        <Link to={'/messenger'}>
-          <div 
-            className="icon-messages"
-          >
-            <BiLogoMessenger
-                size={34}  
-                className="icon text-black"
-                color="#000"
-            />
+        {
+          isNaN(parseInt(prof)) ? "" : <div className="messages notif relative">
+            <Link to={'/messenger'}>
+              <div 
+                className="icon-messages"
+              >
+                <BiLogoMessenger
+                    size={34}  
+                    className="icon text-black"
+                    color="#000"
+                />
+              </div>
+            </Link>
+              <span className="absolute top-1/2 right-0 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              7</span>
           </div>
-        </Link>
-          <span className="absolute top-1/2 right-0 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-          7</span>
-        </div>
+        }
+      
         <div className="notif relative cursor-pointer" onClick={handleIconClick}>
         {
             haveProf &&

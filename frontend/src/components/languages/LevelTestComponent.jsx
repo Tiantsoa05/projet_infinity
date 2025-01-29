@@ -1,25 +1,56 @@
 /* eslint-disable react/prop-types */
-import{ useState } from 'react';
+import{ useEffect, useState } from 'react';
 import { LEVEL_TEST } from '../../constants/levelTest';
 import { ArrowLeft } from 'lucide-react';
+import { testNiveau } from '../../data/testNiveau.js';
 
 function LevelTestComponent({ 
   selectedLanguage, 
   onLevelTestComplete ,
   back
 }) {
-  const [levelTestAnswers, setLevelTestAnswers] = useState({});
+  const [levelTestAnswers, setLevelTestAnswers] = useState([]);
 
-  const handleLevelTestAnswer = (question, answer) => {
-    setLevelTestAnswers(prev => ({
-      ...prev,
-      [question]: answer
-    }));
+  const [sujet,setSujet]=useState({})
+
+  const handleLevelTestAnswer = (question, answer,sujet) => {
+
+    let retour = {
+      question,
+      answer,
+      trueResponse: sujet.reponse,
+      note: sujet.points
+    }
+
+    const existed = levelTestAnswers.find(b=>b.question===question)
+
+    if(existed){
+
+      let r= levelTestAnswers
+      let index = levelTestAnswers.indexOf(existed)
+      r[index]=retour
+      
+      setLevelTestAnswers([...r])
+    }else{
+      setLevelTestAnswers([...levelTestAnswers,retour])
+    }
+    // setLevelTestAnswers(prev => ({
+    //   ...prev,
+    //   [question]: answer
+    // }));
+
+    console.log(levelTestAnswers)
+
   };
 
   const calculateLevel = () => {
     onLevelTestComplete(levelTestAnswers);
   };
+
+  useEffect(()=>{
+    let sub = testNiveau.find(sub=>sub.lang===selectedLanguage.id)
+    setSujet(sub.test)
+  },[])
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -34,31 +65,36 @@ function LevelTestComponent({
           Test de niveau en <span className="text-blue-600">{selectedLanguage.name}</span>
         </h2>
       </div>
-      {Object.entries(LEVEL_TEST).map(([level, questions]) => (
-        <div key={level} className="mb-8">
-          <h3 className="text-2xl font-semibold mb-4 capitalize">{level}</h3>
-          {questions.map((q, index) => (
-            <div key={index} className="bg-gray-100 p-4 rounded-lg mb-4">
-              <p className="mb-4">{q.question}</p>
-              {q.options.map((option, optIndex) => (
-                <button
-                  key={optIndex}
-                  onClick={() => handleLevelTestAnswer(q.question, option)}
-                  className={`
-                    w-full text-left p-2 mb-2 rounded 
-                    ${levelTestAnswers[q.question] === option 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-white hover:bg-blue-100'
-                    }
-                  `}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          ))}
-        </div>
-      ))}
+      {
+        sujet.length > 0 &&  
+        
+        sujet.map(sub=>(
+          <div key={sub.id} className="mb-8">
+            <div className="bg-gray-100 p-4 rounded-lg mb-4">
+              <div className='text-left'>
+                {sub.question}
+              </div>
+                {sub.choix.map((choice, index) => {
+                  const isSelected = levelTestAnswers.find(
+                    (answer) => answer.question === sub.question && answer.answer === choice
+                  );
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleLevelTestAnswer(sub.question, choice, sub)}
+                      className={`
+                        w-full text-left p-2 mb-2 rounded 
+                        ${isSelected ? 'bg-blue-600 text-white' : 'bg-white hover:bg-blue-100'}
+                      `}
+                    >
+                      {choice}
+                    </button>
+                  );
+                })}
+              </div>
+          </div>
+        ))
+      }
       <div className="text-center">
         <button 
           onClick={calculateLevel}

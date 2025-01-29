@@ -18,6 +18,11 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const [registerModal,setRegisterModal]= useState(false)
     const [dateNaissance,setDateNaissance] = useState('2002-01-01')
+    const levelLanguage = localStorage.getItem("niveauLangue")
+
+    const capitalize = (word)=>{
+        return word.charAt(0).toUpperCase()+word.slice(1)
+    }
 
     const handleSubmit = async (e) => {
 
@@ -30,7 +35,8 @@ const RegisterPage = () => {
             datenaiss: new Date(dateNaissance),
             email,
             password,
-            role
+            role,
+            levelLanguage: capitalize(levelLanguage)
         })
         try {
             const response = await axios.post('http://localhost:3000/auth/register', {
@@ -39,7 +45,8 @@ const RegisterPage = () => {
                 datenaiss: new Date(dateNaissance),
                 email,
                 password,
-                role
+                role,
+                levelLanguage: capitalize(levelLanguage)
             });
 
             localStorage.setItem('token', response.data.token);

@@ -18,7 +18,7 @@ function LandingPageNavbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.clear()
     setIsAuthenticated(false);
     setIsLogoutModalOpen(false); // Ferme le modal
     navigate("/");

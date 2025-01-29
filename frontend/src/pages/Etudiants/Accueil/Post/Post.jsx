@@ -10,30 +10,34 @@ const Post = () => {
         axios.get('http://localhost:3000/all/profs').then(
             res=> {
 
+                let prosArray = []
+
                 res.data.map(prof=>{
+                    console.log(res.data)
                     const {
                         id_prof,
                         nom_prof,
                         prenom_prof,
-                        Niveau_Etude,
+                        num_phone,
                         langue,
                         mail_prof
                     }=prof
 
                     let l = LANGUAGES.find(language =>language.name === langue.nom_langue)
 
-                    setPost(
-                        [...post,{
-                            id:id_prof,
-                            langue: langue.nom_langue,
-                            nom: [nom_prof,prenom_prof].join(' '),
-                            experience: Niveau_Etude,
-                            icon: l.icon,
-                            mail: mail_prof
-                        }]
-    
-                    )
+                    prosArray.push({
+                        id:id_prof,
+                        langue: langue.nom_langue,
+                        nom: [nom_prof,prenom_prof].join(' '),
+                        telephone: num_phone,
+                        icon: l.icon,
+                        mail: mail_prof
+                    })
+
                 })
+                setPost(
+                    [...prosArray]
+                )
             }
         )
     },[])

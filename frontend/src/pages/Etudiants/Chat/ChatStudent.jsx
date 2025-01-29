@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ChatMessages } from "../../../data/Chat.js";
 import { IoSend } from "react-icons/io5";
 import socket from "../../../tools/socket-io.js";
 import { Header } from "../Accueil/Header/Header.jsx";

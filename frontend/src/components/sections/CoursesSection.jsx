@@ -48,6 +48,10 @@ export function CoursesSection() {
           setShowModal(false);
           setCurrentCourse(null);
           fetchCourses();
+
+          setCourses([...courses, {
+            id:formDataToSend.get('id')
+          }])
           setFichier(null);
         })
         .catch(error=>console.log(error))
@@ -161,23 +165,7 @@ export function CoursesSection() {
           </div>
         </div>
         <p className="text-gray-600 mb-4">{course.description}</p>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-500">
-          <div className="flex items-center gap-2">
-            <Globe size={16} />
-            {course.langue}
-          </div>
-          <div className="flex items-center gap-2">
-            <BarChart3 size={16} />
-            {course.niveau_difficulte}
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock size={16} />
-            {course.duree} min
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="font-medium">{course.prix}Ar</span>
-          </div>
-        </div> */}
+
       </div>
     ))}
   </div>
