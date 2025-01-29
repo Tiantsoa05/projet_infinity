@@ -21,6 +21,7 @@ import FormPayement from "./components/prof/FormPayement";
 import StudDashboard from "./pages/Etudiants/Dashboard/StudDashboard";
 import FileViewer from "./components/FileViewer/FileViewer";
 import ExercicePage from "./components/sections/ExercicePage";
+import Chapters from "./pages/Etudiants/Contenus/Courses/Chapter/Chapters";
 
 
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/follow" element={<Follow/>}/>
           <Route path="/payer" element={<FormPayement/>}/>
           <Route path="/course/view/:id" element={<FileViewer/>} />
+          <Route path="/courses/:titre" element={<Chapters/>}/>
         
           {/* Route pour les exercices */}
           <Route path="/lecons/:leconId/exercices" element={<ExercicePage />} />
