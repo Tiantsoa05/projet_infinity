@@ -35,6 +35,7 @@ model Professeur {
   payment         PayerDroit[]
   Discuter        Discuter[]
   Etudiant        Etudiant[]
+  ProgrammeAgenda ProgrammeAgenda[]
 }
 
 model Niveau{
@@ -111,4 +112,12 @@ model Examen {
   id_examen Int @id @default(autoincrement())
   question_examen String
   reponse_examen String
+}
+
+model ProgrammeAgenda{
+  id_prog  Int @id @default(autoincrement())
+  tache  String
+  id_prof Int
+  date_tache DateTime
+  professeur  Professeur @relation(fields: [id_prof], references: [id_prof])
 }

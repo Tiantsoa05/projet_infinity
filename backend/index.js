@@ -8,6 +8,7 @@ import ChatRouter from './src/routers/ChatRouter.js'
 import SpellCheckRouter from './src/routers/Practice/SpellCheckRouter.js'
 import CoursRouter from './src/routers/CoursRouter.js'
 import ProfRouter from './src/routers/ProfRouter.js'
+import AgendaRouter from './src/routers/AgendaRouter.js'
 import io from "./src/tools/socket-io.js";
 import { send } from "./src/controllers/Etudiants/ChatController.js";
 import path from 'path'
@@ -34,6 +35,7 @@ app.use('/messenger',ChatRouter)
 app.use('/spell',SpellCheckRouter)
 app.use('/courses',CoursRouter)
 app.use('/prof',ProfRouter)
+app.use('/agenda',AgendaRouter)
 
 // config room meet
 const rooms = new Map()
